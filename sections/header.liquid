@@ -1,12 +1,16 @@
 <div class="relative bg-white" x-data="{  mobileMenuOpen: false }">
     <div class="flex w-full justify-between items-center p-5 px-48 text-white bg-black mt-4">
-    <div class="hidden md:flex justify-between w-2/3">
+    <div class="hidden md:flex justify-between items-center w-2/3">
          <p class="uppercase">
             Free shipping over £50
         </p>
-        <p class="uppercase">
+        <div class="flex">
+            <p class="uppercase">
             Let&#39;s spice it up
         </p>
+        {% render 'icon-chilli' %}
+        </div>
+        
     </div>    
    
         <a href="/pages/contact-us" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
@@ -65,7 +69,7 @@
        <!-- STORE NAME / STORE LOGO -->
       <div class="flex justify-center lg:flex-1 truncate">
         <a href="#"
-        class="text-xl font-bold truncate">{{ shop.name }}</a>
+        class="text-xl font-bold truncate"><img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-20 w-36"></a>
       </div>
 
       <!-- Cart, Login and Resgister -->
@@ -74,9 +78,11 @@
         <a href="#" class="text-base text-gray-500 hover:text-gray-900">
             {% render 'icon-search' %}
         </a>
-       
-        <a href="{{ routes.account_login_url }}" class="text-base text-gray-500 hover:text-gray-900">
+       {% if shop.customer_accounts_enabled %}
+            <a href="{{ routes.account_login_url }}" class="text-base text-gray-500 hover:text-gray-900">
             {% render 'icon-login' %}</a>
+       {% endif %}
+        
          <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
           {% render  'icon-shopping-bag' %}
         </a>
