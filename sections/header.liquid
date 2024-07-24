@@ -1,11 +1,14 @@
-<div class="relative bg-white" x-data="{  mobileMenuOpen: true }">
+<div class="relative bg-white" x-data="{  mobileMenuOpen: false }">
     <div class="flex w-full justify-between items-center p-5 px-48 text-white bg-black mt-4">
-        <p class="uppercase">
+    <div class="hidden md:flex justify-between w-2/3">
+         <p class="uppercase">
             Free shipping over £50
         </p>
         <p class="uppercase">
             Let&#39;s spice it up
         </p>
+    </div>    
+   
         <a href="/pages/contact-us" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
           {% render  'icon-mail' %}
         </a>
