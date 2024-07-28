@@ -1,3 +1,5 @@
+{% assign main_menu_linklist = linklists[section.settings.menu].links %}
+
 <div class="relative bg-white" x-data="{  mobileMenuOpen: false }">
     <div class="flex w-full justify-between items-center p-5 px-48 text-white bg-black mt-4">
     <div class="hidden md:flex justify-between items-center w-2/3">
@@ -46,7 +48,7 @@
                         <div class="shadow-lg border ring-black ring-opacity-5 overflow-hidden rounded-lg">
                             <div class="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
                                 {% for childlink in link.links %}
-                                    <a class="-m-3 p-3 flex items start rounded-lg hover:bg-gray-100">
+                                    <a href="{{ childlink.url }}" class="-m-3 p-3 flex items start rounded-lg hover:bg-gray-100">
                                         <div class="ml-4">
                                             <p class="text-gray-900 text-base font-medium">
                                                 {{ childlink.title }}
@@ -68,8 +70,9 @@
 
        <!-- STORE NAME / STORE LOGO -->
       <div class="flex justify-center lg:flex-1 truncate">
-        <a href="#"
-        class="text-xl font-bold truncate"><img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-20 w-36"></a>
+        <a href="#" class="text-xl font-bold truncate">
+            <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-20 w-36">
+        </a>
       </div>
 
       <!-- Cart, Login and Resgister -->
