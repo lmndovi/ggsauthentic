@@ -1,0 +1,41 @@
+<div class="relative bg-cover bg-top h-80"
+style="background-image: url({{ section.settings.banner_image | img_url: 'master' }});">
+    <div class="absolute inset-0 flex items-center justify-center">
+        <a href="{{ section.settings.banner_link }}" class="uppercase text-2xl bg-white text-black border-[1px] border-black rounded-lg font-bold py-3 px-4 ">
+            {{ section.settings.banner_text }}
+        </a>
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "url",
+      "id": "banner_link",
+      "label": "Banner Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner Text",
+      "default": "A blend of natural herbs & spices"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Default",
+      "category": "Banner"
+    }
+  ]
+}
+{% endschema %}
+
+
