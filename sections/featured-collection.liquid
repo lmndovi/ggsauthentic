@@ -12,6 +12,15 @@
                 {% endfor %}
             {% endfor %}
         </div>
+  
+    </div>
+   <!-- Button below the featured collection -->
+    <div class="relative mt-8">
+        <div class="h-12 bg-[#ffb045] rounded-lg">
+            <a href="/collections/all" class="relative uppercase text-2xl bg-white text-black border-[0.5px] border-black rounded-lg font-bold py-2 px-8 transition duration-1000 ease-in-out hover:scale">
+                {{ section.settings.button_text}}
+            </a>
+        </div>
     </div>
 </div>
 
@@ -38,7 +47,14 @@
                 "min": 4,
                 "max": 12,
                 "default": 4,
-                "label": "Number of products to show"
+                "label": "Number of products to show",
+                "step": 1
+            },
+            {
+                "type": "text",
+                "id": "button_text",
+                "default": "View All",
+                "label": "Button Text"
             }
         ],
         "presets": [
