@@ -18,7 +18,21 @@
       "settings": {
         "secondary-collection": "all"
       }
+    },
+    "reviews": {
+      "type": "reviews",
+      "settings": {}
+    },
+    "discount-signup": {
+      "type": "discount-signup",
+      "settings": {}
     }
   },
-  "order": ["banner", "featured-collection", "secondary-collection"]
+  "order": [
+    "banner",
+    "featured-collection",
+    "secondary-collection",
+    "reviews",
+    "discount-signup"
+  ]
 }
