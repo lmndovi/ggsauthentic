@@ -12,7 +12,13 @@
       "settings": {
         "featured_collection": "all"
       }
+    },
+    "secondary-collection": {
+      "type": "secondary-collection",
+      "settings": {
+        "secondary-collection": "all"
+      }
     }
   },
-  "order": ["banner", "featured-collection"]
+  "order": ["banner", "featured-collection", "secondary-collection"]
 }
