@@ -12,29 +12,17 @@
     "banner": {
       "type": "banner",
       "settings": {
-        "banner_image": "shopify:\/\/shop_images\/Slider.jpg",
-        "banner_link": "shopify:\/\/collections\/all",
-        "banner_text": "A blend of natural herbs & spices"
       }
     },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Mild or Xtra Hot?",
-        "featured_collection": "all",
-        "number_of_products_to_show": 4,
-        "button_text": "View All"
+        "featured_collection": "all"
       }
     },
     "secondary-collection": {
       "type": "secondary-collection",
       "settings": {
-        "subheading": "Uncovering Authentic Flavours",
-        "title": "Spicy & Supa Hot",
-        "secondary_collection": "marinades",
-        "number_of_products_to_show": 3,
-        "button_text": "View All",
-        "button_link": "shopify:\/\/collections\/marinades"
       }
     },
     "reviews": {
@@ -46,12 +34,6 @@
       "type": "discount-signup",
       "settings": {
       }
-    },
-    "pagefly-home": {
-      "type": "pagefly-home",
-      "disabled": true,
-      "settings": {
-      }
     }
   },
   "order": [
@@ -59,7 +41,6 @@
     "featured-collection",
     "secondary-collection",
     "reviews",
-    "discount-signup",
-    "pagefly-home"
+    "discount-signup"
   ]
 }
