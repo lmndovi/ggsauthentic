@@ -34,11 +34,6 @@
       "type": "discount-signup",
       "settings": {
       }
-    },
-    "pagefly-home": {
-      "type": "pagefly-home",
-      "settings": {
-      }
     }
   },
   "order": [
@@ -46,7 +41,6 @@
     "featured-collection",
     "secondary-collection",
     "reviews",
-    "discount-signup",
-    "pagefly-home"
+    "discount-signup"
   ]
 }
