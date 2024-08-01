@@ -30,11 +30,11 @@
       "type": "secondary-collection",
       "settings": {
         "subheading": "Uncovering Authentic Flavours",
-        "title": "Secondary Collection",
-        "secondary_collection": "",
+        "title": "Spicy & Supa Hot",
+        "secondary_collection": "marinades",
         "number_of_products_to_show": 3,
         "button_text": "View All",
-        "button_link": "shopify:\/\/collections\/all"
+        "button_link": "shopify:\/\/collections\/marinades"
       }
     },
     "reviews": {
