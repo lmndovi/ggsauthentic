@@ -12,17 +12,29 @@
     "banner": {
       "type": "banner",
       "settings": {
+        "banner_image": "shopify:\/\/shop_images\/Slider.jpg",
+        "banner_link": "shopify:\/\/collections\/all",
+        "banner_text": "A blend of natural herbs & spices"
       }
     },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
-        "featured_collection": "all"
+        "title": "Featured Collection",
+        "featured_collection": "all",
+        "number_of_products_to_show": 4,
+        "button_text": "View All"
       }
     },
     "secondary-collection": {
       "type": "secondary-collection",
       "settings": {
+        "subheading": "Uncovering Authentic Flavours",
+        "title": "Secondary Collection",
+        "secondary_collection": "",
+        "number_of_products_to_show": 3,
+        "button_text": "View All",
+        "button_link": "shopify:\/\/collections\/all"
       }
     },
     "reviews": {
