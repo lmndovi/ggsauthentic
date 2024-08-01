@@ -1348,6 +1348,11 @@ video {
   font-size: 14px;
 }
 
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1370,6 +1375,10 @@ video {
 
 .leading-normal {
   line-height: 1.5;
+}
+
+.leading-5 {
+  line-height: 1.25rem;
 }
 
 .tracking-wide {
@@ -1637,6 +1646,11 @@ video {
 }
 
 @media (min-width: 768px) {
+  .md\:my-16 {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
   .md\:flex {
     display: flex;
   }
