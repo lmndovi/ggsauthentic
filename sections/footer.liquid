@@ -1,28 +1,59 @@
+{% assign shop_footer_linklist = linklists[section.settings.shop-footer].links %}
+{% assign about_footer_linklist = linklists[section.settings.about-footer].links %}
+
 
 <div class="bg-black text white">
-    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-20">
+    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-24">
         {% comment %} Store Logo/Social Icons {% endcomment %}
          <div>
             <a href="/" class="text-xl font-bold truncate">
-            <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-12 w-20">
-        </a>
-        <div class="flex space-x-2 mt-4">
-                <a href="https://www.facebook.com/p/Ggsauthentic-100063679520703/?paipv=0&eav=AfY9lGuMe8DrG0BCYhDQLCXjnCKvK3OKq8v3T54ugrNowIy3uKrv612HSMFqykmNC1Q&_rdr" target="_blank">
+                <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-12 w-20">
+            </a>
+            <ul class="flex space-x-2 mt-4">
+                <li>
+                    <a href="https://www.facebook.com/p/Ggsauthentic-100063679520703/?paipv=0&eav=AfY9lGuMe8DrG0BCYhDQLCXjnCKvK3OKq8v3T54ugrNowIy3uKrv612HSMFqykmNC1Q&_rdr" target="_blank">
                     {% render 'icon-facebook' %}
                 </a>
-                <a href="https://x.com/ggsauthentic" target="_blank">
+                </li>
+                <li>
+                     <a href="https://x.com/ggsauthentic" target="_blank">
                     {% render 'icon-twitter' %}
                 </a>
+                </li>
+               <li>
                 <a href="https://www.instagram.com/ggsauthentic/" target="_blank">
                     {% render 'icon-instagram' %}
                 </a>
-               
-            </div>
+               </li>
+                
+            </ul>
          </div>
          {% comment %} Shop {% endcomment %}
-        <div></div>
+        <div>
+            <h1 class="text-lg font-semibold text-white">
+                Shop
+            </h1>
+            <nav>
+               {% for link in linklists.shop-footer.links %}
+                    <div class="relative py-1">
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-bold text-gray-400 hover:text-white hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                    </div>
+                {% endfor %}
+            </nav>
+        </div>
         {% comment %} About {% endcomment %}
-        <div></div>
+        <div>
+            <h1 class="text-lg font-semibold text-white">
+                About
+            </h1>
+            <nav>
+                {% for link in linklists.about-footer.links %}
+                    <div class="relative py-1">
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-bold text-gray-400 hover:text-white hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                    </div>
+                {% endfor %}
+            </nav>
+        </div>
         {% comment %} Email {% endcomment %}
         {% comment %} Payment Options {% endcomment %}
         {% comment %} Copyright {% endcomment %}
