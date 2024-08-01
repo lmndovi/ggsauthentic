@@ -3,9 +3,9 @@
 
 
 <div class="bg-black text white">
-    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-24">
+    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-24 justify-center mx-auto">
         {% comment %} Store Logo/Social Icons {% endcomment %}
-         <div>
+         <div class="flex flex-col items-center">
             <a href="/" class="text-xl font-bold truncate">
                 <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-12 w-20">
             </a>
@@ -29,7 +29,7 @@
             </ul>
          </div>
          {% comment %} Shop {% endcomment %}
-        <div>
+        <div class="mx-auto">
             <h1 class="text-lg font-semibold text-white">
                 Shop
             </h1>
@@ -42,7 +42,7 @@
             </nav>
         </div>
         {% comment %} About {% endcomment %}
-        <div>
+        <div class="mx-auto">
             <h1 class="text-lg font-semibold text-white">
                 About
             </h1>
