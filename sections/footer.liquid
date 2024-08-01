@@ -2,8 +2,8 @@
 {% assign about_footer_linklist = linklists[section.settings.about-footer].links %}
 
 
-<div class="bg-black text white">
-    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-24 justify-center mx-auto">
+<div class="bg-black text white pb-10">
+    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-12 justify-center mx-auto space-y-5">
         {% comment %} Store Logo/Social Icons {% endcomment %}
          <div class="flex flex-col items-center">
             <a href="/" class="text-xl font-bold truncate">
@@ -25,7 +25,6 @@
                     {% render 'icon-instagram' %}
                 </a>
                </li>
-                
             </ul>
          </div>
          {% comment %} Shop {% endcomment %}
@@ -36,7 +35,7 @@
             <nav>
                {% for link in linklists.shop-footer.links %}
                     <div class="relative py-1">
-                        <a href="{{ link.url }}" class=" uppercase text-sm font-bold text-gray-400 hover:text-white hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-400 hover:text-white hover:underline hover:underline-offset-4">{{ link.title }}</a>
                     </div>
                 {% endfor %}
             </nav>
@@ -49,16 +48,39 @@
             <nav>
                 {% for link in linklists.about-footer.links %}
                     <div class="relative py-1">
-                        <a href="{{ link.url }}" class=" uppercase text-sm font-bold text-gray-400 hover:text-white hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-400 hover:text-white hover:underline hover:underline-offset-4">{{ link.title }}</a>
                     </div>
                 {% endfor %}
             </nav>
-        </div>
-        {% comment %} Email {% endcomment %}
+        </div>     
+    </div>
+     {% comment %} Email {% endcomment %}
         {% comment %} Payment Options {% endcomment %}
         {% comment %} Copyright {% endcomment %}
-        <div></div>
-    </div>
+        <div class="flex flex-col items-center justify-center space-y-3 ">
+            <h2 class="text-white">Sign Up</h2>
+            <form action="/contact" method="post">
+                    <section class="flex items-center justify-center space-x-3 w-full">
+            <input type="hidden" name="form_type" value="customer">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="email" name="email" placeholder="Please enter your email" class="w-7/8 border border-gray-400 bg-transparent rounded-md px-5 py-2" required>
+            </section>
+            </form>
+            <div class="flex space-x-2">
+                <li class="">{% render 'icon-amex' %}</li>
+                <li>{% render 'icon-applepay' %}</li>
+                <li>{% render 'icon-googlepay' %}</li>
+                <li >{% render 'icon-mastercard' %}</li>
+                <li>{% render 'icon-paypal' %}</li>
+                <li>{% render 'icon-venmo' %}</li>
+                <li >{% render 'icon-visa' %}</li>
+            </div>
+            <div class="flex flex-col justify-center items-center">
+                <p class="text-[14px] text-gray-400">
+                    &copy; 2024, GGsauthentic
+                </p>
+            </div>
+        </div>
 </div>
 
 
