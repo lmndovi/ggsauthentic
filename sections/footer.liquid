@@ -1,0 +1,35 @@
+
+<div class="bg-black text white">
+    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-20">
+        {% comment %} Store Logo/Social Icons {% endcomment %}
+         <div>
+            <a href="/" class="text-xl font-bold truncate">
+            <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-12 w-20">
+        </a>
+        <div class="flex space-x-2 mt-4">
+                <a href="https://www.facebook.com/p/Ggsauthentic-100063679520703/?paipv=0&eav=AfY9lGuMe8DrG0BCYhDQLCXjnCKvK3OKq8v3T54ugrNowIy3uKrv612HSMFqykmNC1Q&_rdr" target="_blank">
+                    {% render 'icon-facebook' %}
+                </a>
+                <a href="https://x.com/ggsauthentic" target="_blank">
+                    {% render 'icon-twitter' %}
+                </a>
+                <a href="https://www.instagram.com/ggsauthentic/" target="_blank">
+                    {% render 'icon-instagram' %}
+                </a>
+               
+            </div>
+         </div>
+         {% comment %} Shop {% endcomment %}
+        <div></div>
+        {% comment %} About {% endcomment %}
+        <div></div>
+        {% comment %} Email {% endcomment %}
+        {% comment %} Payment Options {% endcomment %}
+        {% comment %} Copyright {% endcomment %}
+        <div></div>
+    </div>
+</div>
+
+
+
+
