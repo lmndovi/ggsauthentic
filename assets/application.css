@@ -813,6 +813,10 @@ video {
   width: 100vw;
 }
 
+.min-w-60 {
+  min-width: 15rem;
+}
+
 .max-w-36 {
   max-width: 9rem;
 }
@@ -835,6 +839,10 @@ video {
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.max-w-full {
+  max-width: 100%;
 }
 
 .flex-1 {
@@ -979,6 +987,10 @@ video {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.whitespace-normal {
+  white-space: normal;
 }
 
 .whitespace-nowrap {
@@ -1639,6 +1651,11 @@ video {
   .md\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
+  }
+
+  .md\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 }
 
