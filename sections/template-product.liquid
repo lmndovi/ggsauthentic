@@ -109,37 +109,23 @@
                                 <div class="my-3">
                                     <p class="text-gray-700">{{ product.description }}</p>
                                 </div>
+                        {% when 'checkout_button' %}
+                            <div class="my-3">
+                                <button type="submit" name="add" class="w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 rounded-sm my-2"
+                                    {% if selected_variant.available == false %}
+                                        disabled
+                                    {% endif %}
+                                >
+                                    {% if selected_variant.available == false %}
+                                        Sold out
+                                    {% else %}
+                                        Add to cart
+                                    {% endif %}
+                                </button>
+                            </div>
                         {% else %}
-                            
                     {% endcase %}
-                    
-                {% endfor %}
-                
-
-                
-
-               
-
-
-                
-
-                <div class="my-3">
-                    <p class="text-gray-700">{{ product.description }}</p>
-                </div>
-
-                <div class="my-3">
-                    <button type="submit" name="add" class="w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 rounded-sm my-2"
-                        {% if selected_variant.available == false %}
-                            disabled
-                        {% endif %}
-                    >
-                        {% if selected_variant.available == false %}
-                            Sold out
-                        {% else %}
-                            Add to cart
-                        {% endif %}
-                    </button>
-                </div>
+                {% endfor %}   
             {% endform %}
         </div>
     </div>
