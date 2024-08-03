@@ -71,7 +71,7 @@
                         {% when 'variant_selector' %}
                             <div class="my-3">
                                 {% unless product.has_only_default_variant %}
-                                    <div data-url="{{ product.url}}" data-section="{{ section.id }}">
+                                    <variant-selector data-url="{{ product.url}}" data-section="{{ section.id }}">
                                         {% for option in product.options_with_values %}
                                             <label for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
 
@@ -93,8 +93,11 @@
                                                     {% endfor %}
                                                 </select>
                                             </div>
+                                            <script type="application/json">
+                                                        {{ product.variants |  json }}
+                                            </script>
                                         {% endfor %}
-                                     </div>
+                                     </variant-selector>
                                 {% endunless %}
                             </div>
                             {% when 'quantity' %}
@@ -110,19 +113,19 @@
                                     <p class="text-gray-700">{{ product.description }}</p>
                                 </div>
                         {% when 'checkout_button' %}
-                            <div class="my-3">
-                                <button type="submit" name="add" class="w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 rounded-sm my-2"
-                                    {% if selected_variant.available == false %}
-                                        disabled
-                                    {% endif %}
-                                >
-                                    {% if selected_variant.available == false %}
-                                        Sold out
-                                    {% else %}
-                                        Add to cart
-                                    {% endif %}
-                                </button>
-                            </div>
+                             <div class="my-3">
+                    <button type="submit" name="add" class="w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 rounded-sm my-2"
+                        {% if product.selected_or_first_available_variant == false %}
+                            disabled
+                        {% endif %}
+                    >
+                        {% if product.selected_or_first_available_variant.available == false %}
+                            Sold out
+                        {% else %}
+                            Add to cart
+                        {% endif %}
+                    </button>
+                </div>
                         {% else %}
                     {% endcase %}
                 {% endfor %}   
@@ -131,6 +134,43 @@
     </div>
 </div>
 
+
+<script>
+    class VariantSelector extends HTMLElement{
+        constructor() {
+            super();
+            this.addEventListener("change", this.onVariantChange)
+        }
+
+        onVariantChange() {
+           this.getSelectedOptions();
+           this.getSelectedVariant();
+    }
+
+            getSelectedOptions() {
+                this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
+                console.log(this.options)
+            }
+
+            getVariantJSON() {
+                this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
+                return this.variantData;
+            }
+
+            getSelectedVariant() {
+                this.currentVariant = this.getVariantJSON().find(
+                    (variant) => {
+                        const findings = variant.options.map(
+                            (option, index) => {
+                                return this.options[index] === option;
+                            }
+                        ).includes()
+                    }
+                )
+            }
+        }
+    customElements.define("variant-selector", VariantSelector)
+</script>
 
 <script>
     const swiper = new Swiper('.swiper', {
