@@ -46,7 +46,7 @@
         </div>
 
         <div class="product--information sticky top-5 p-2">
-            {% form 'product', product %}
+            {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
                 <input type="hidden" name="id" value="{{ selected_variant.id }}">
 
                 {% for block in section.blocks %}
@@ -60,7 +60,7 @@
                                 <h1 class="text-3xl text-gray-900">{{ product.title }}</h1>
                             </div>
                         {% when 'price' %}
-                            <div class="my-3">
+                            <div  class="my-3" id="price-{{ section.id }}">
                                 <span class="text-base text-gray-500 line-through">{{ selected_variant.compare_at_price | money }}</span>
                                 <span class="text-lg text-gray-900">{{ selected_variant.price | money }}</span>
 
@@ -112,21 +112,22 @@
                                 <div class="my-3">
                                     <p class="text-gray-700">{{ product.description }}</p>
                                 </div>
-                        {% when 'checkout_button' %}
-                             <div class="my-3">
-                    <button type="submit" name="add" class="w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 rounded-sm my-2"
-                        {% if product.selected_or_first_available_variant == false %}
-                            disabled
-                        {% endif %}
-                    >
-                        {% if product.selected_or_first_available_variant.available == false %}
-                            Sold out
+                        {% when 'checkout_buttons' %}
+                            <div class="my-3">
+                                <button type="submit" name="add" class="w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 rounded-sm my-2"
+                                    {% if selected_variant.available == false %}
+                                        disabled
+                                    {% endif %}
+                                >
+                                    {% if selected_variant.available == false %}
+                                        Sold out
+                                    {% else %}
+                                        Add to cart
+                                    {% endif %}
+                                </button>
+                            </div>
                         {% else %}
-                            Add to cart
-                        {% endif %}
-                    </button>
-                </div>
-                        {% else %}
+                            
                     {% endcase %}
                 {% endfor %}   
             {% endform %}
@@ -164,10 +165,37 @@
                             (option, index) => {
                                 return this.options[index] === option;
                             }
-                        ).includes()
+                        ).includes(false);
+
+                        if(findings) return variant;
                     }
-                )
+                );
+                console.log(this.currentVariant);
             }
+            updateURL() {
+            if(!this.currentVariant) return;
+            window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
+        } 
+        
+            updateFormID() {
+                const form_input = document.querySelector("#product-form").querySelector('input[name="id"]');
+                form_input.value = this.currentVariant.id;
+        }
+
+            updatePrice() {
+            fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+            .then((response) => response.text())
+            .then((responseText) => {
+                const id = `price-${this.dataset.section}`;
+                const html = new DOMParser().parseFromString(responseText, 'text/html');
+
+                const oldPrice = document.getElementById(id);
+                const newPrice = html.getElementById(id);
+
+                if(oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
+            });
+        }
+
         }
     customElements.define("variant-selector", VariantSelector)
 </script>
