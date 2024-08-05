@@ -60,11 +60,11 @@
                                 <h1 class="text-3xl text-gray-900">{{ product.title }}</h1>
                             </div>
                         {% when 'price' %}
-                            <div  class="my-3" id="price-{{ section.id }}">
+                            <div class="my-3" id="price-{{ section.id }}">
                                 <span class="text-base text-gray-500 line-through">{{ selected_variant.compare_at_price | money }}</span>
                                 <span class="text-lg text-gray-900">{{ selected_variant.price | money }}</span>
 
-                                {% if selected_variant.price < selected.compare_at_price %}
+                                {% if selected_variant.price < selected_variant.compare_at_price %}
                                     <span class="px-5 py-1 text-sm font-bold bg-red-500 rounded-full text-white mx-4">Sale</span>
                                 {% endif %}
                             </div>
@@ -77,13 +77,13 @@
 
                                             <div class="my-2">
                                                 <select 
-                                                name="options[{{ option.name | escape }}]" 
-                                                id="Option-{{ section.id }}-{{ forloop.index0 }}" 
-                                                class="w-full border py-3 px-3"
+                                                    name="options[{{ option.name | escape }}]" 
+                                                    id="Option-{{ section.id }}-{{ forloop.index0 }}" 
+                                                    class="w-full border py-3 px-3"
                                                 >
                                                     {% for value in option.values %}
                                                         <option 
-                                                        value="{{ value | escape }}"
+                                                            value="{{ value | escape }}"
                                                             {% if option.selected_value == value %}
                                                                 selected="selected"
                                                             {% endif %}
@@ -93,14 +93,17 @@
                                                     {% endfor %}
                                                 </select>
                                             </div>
+
                                             <script type="application/json">
-                                                        {{ product.variants |  json }}
+                                                {{ product.variants | json }}
                                             </script>
+
                                         {% endfor %}
-                                     </variant-selector>
+                                    </variant-selector>
                                 {% endunless %}
                             </div>
-                            {% when 'quantity' %}
+
+                        {% when 'quantity' %}
                             <div class="my-3">
                                 <label for="Quantity-{{ section.id }}">Quantity</label>
 
@@ -109,9 +112,10 @@
                                 </div>
                             </div>
                         {% when 'description' %}
-                                <div class="my-3">
-                                    <p class="text-gray-700">{{ product.description }}</p>
-                                </div>
+                            <div class="my-3">
+                                <p class="text-gray-700">{{ product.description }}</p>
+                            </div>
+
                         {% when 'checkout_buttons' %}
                             <div class="my-3">
                                 <button type="submit" name="add" class="w-full px-6 py-4 bg-gray-900 text-white hover:bg-gray-700 rounded-sm my-2"
@@ -129,60 +133,67 @@
                         {% else %}
                             
                     {% endcase %}
-                {% endfor %}   
+                {% endfor %}
             {% endform %}
         </div>
     </div>
 </div>
 
-
 <script>
-    class VariantSelector extends HTMLElement{
+    class VariantSelector extends HTMLElement {
         constructor() {
             super();
-            this.addEventListener("change", this.onVariantChange)
+            this.addEventListener("change", this.onVariantChange);
         }
 
         onVariantChange() {
-           this.getSelectedOptions();
-           this.getSelectedVariant();
-    }
+            this.getSelectedOptions();
+            this.getSelectedVariant();
 
-            getSelectedOptions() {
-                this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
-                console.log(this.options)
+            if(this.currentVariant) {
+                this.updateURL();
+                this.updateFormID();
+                this.updatePrice();
             }
-
-            getVariantJSON() {
-                this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
-                return this.variantData;
-            }
-
-            getSelectedVariant() {
-                this.currentVariant = this.getVariantJSON().find(
-                    (variant) => {
-                        const findings = variant.options.map(
-                            (option, index) => {
-                                return this.options[index] === option;
-                            }
-                        ).includes(false);
-
-                        if(findings) return variant;
-                    }
-                );
-                console.log(this.currentVariant);
-            }
-            updateURL() {
-            if(!this.currentVariant) return;
-            window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
-        } 
-        
-            updateFormID() {
-                const form_input = document.querySelector("#product-form").querySelector('input[name="id"]');
-                form_input.value = this.currentVariant.id;
         }
 
-            updatePrice() {
+        getSelectedOptions() {
+            this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
+            console.log(this.options);
+        }
+
+        getVariantJSON() {
+            this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
+            return this.variantData;
+        }
+
+        getSelectedVariant() {
+            this.currentVariant = this.getVariantJSON().find(
+                (variant) => {
+                    const findings = !variant.options.map(
+                        (option, index) => {
+                            return this.options[index] === option;
+                        }
+                    ).includes(false);
+
+                    if(findings) return variant;
+                }
+            );
+
+            console.log(this.currentVariant);
+        }
+
+        updateURL() {
+            if(!this.currentVariant) return;
+            window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
+        }
+
+        updateFormID() {
+            const form_input = document.querySelector("#product-form").querySelector('input[name="id"]');
+            form_input.value = this.currentVariant.id;
+        }
+
+        updatePrice() {
             fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
             .then((response) => response.text())
             .then((responseText) => {
@@ -195,15 +206,14 @@
                 if(oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
             });
         }
+    }
 
-        }
-    customElements.define("variant-selector", VariantSelector)
+    customElements.define("variant-selector", VariantSelector);
 </script>
 
 <script>
     const swiper = new Swiper('.swiper', {
         direction: 'horizontal',
-        loop: true,
 
         pagination: {
             el: '.swiper-pagination'
@@ -220,41 +230,41 @@
 {
     "name": "Product",
     "blocks": [
-            {
-                "type": "vendor",
-                "name": "Vendor",
-                "limit": 1
-            },
-            {
-                "type": "title",
-                "name": "Title",
-                "limit": 1
-            },
-            {
-                "type": "price",
-                "name": "Price",
-                "limit": 1
-            },
-            {
-                "type": "variant_selector",
-                "name": "Variant Selector",
-                "limit": 1
-            },
-            {
-                "type": "quantity",
-                "name": "Quantity",
-                "limit": 1
-            },
-            {
-                "type": "description",
-                "name": "Description",
-                "limit": 1
-            },
-            {
-                "type": "checkout_buttons",
-                "name": "Checkout Buttons",
-                "limit": 1
-            }
-        ]
+        {
+            "type": "vendor",
+            "name": "Vendor",
+            "limit": 1
+        },
+        {
+            "type": "title",
+            "name": "Title",
+            "limit": 1
+        },
+        {
+            "type": "price",
+            "name": "Price",
+            "limit": 1
+        },
+        {
+            "type": "variant_selector",
+            "name": "Variant Selector",
+            "limit": 1
+        },
+        {
+            "type": "quantity",
+            "name": "Quantity",
+            "limit": 1
+        },
+        {
+            "type": "description",
+            "name": "Description",
+            "limit": 1
+        },
+        {
+            "type": "checkout_buttons",
+            "name": "Checkout Buttons",
+            "limit": 1
+        }
+    ]
 }
 {% endschema %}
