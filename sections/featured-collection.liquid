@@ -12,6 +12,24 @@
                 {% endfor %}
             {% endfor %}
         </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {% for product in section.settings.featured_collection_2.products limit: section.settings.number_of_products_to_show %}
+                {% render 'product-card', product: product %}
+            {% else %}
+                {% for item in (1..3) %}
+                    {% render 'product-card-placeholder' %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {% for product in section.settings.featured_collection_3.products limit: section.settings.number_of_products_to_show %}
+                {% render 'product-card', product: product %}
+            {% else %}
+                {% for item in (1..3) %}
+                    {% render 'product-card-placeholder' %}
+                {% endfor %}
+            {% endfor %}
+        </div>
   
     </div>
    <!-- Button below the featured collection -->
@@ -42,11 +60,21 @@
                 "label": "Collection"
             },
             {
+                "type": "collection",
+                "id": "featured_collection_2",
+                "label": "Collection"
+            },
+            {
+                "type": "collection",
+                "id": "featured_collection_3",
+                "label": "Collection"
+            },
+            {
                 "type": "range",
                 "id": "number_of_products_to_show",
-                "min": 4,
+                "min": 3,
                 "max": 12,
-                "default": 4,
+                "default": 3,
                 "label": "Number of products to show",
                 "step": 1
             },
