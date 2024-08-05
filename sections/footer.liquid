@@ -40,7 +40,7 @@
             <nav>
                {% for link in linklists.shop-footer.links %}
                     <div class="relative py-1">
-                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-700 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-800 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
                     </div>
                 {% endfor %}
             </nav>
@@ -53,7 +53,7 @@
             <nav>
                 {% for link in linklists.about-footer.links %}
                     <div class="relative py-1">
-                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-700 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-800 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
                     </div>
                 {% endfor %}
             </nav>
@@ -71,7 +71,7 @@
         <input type="email" name="contact[email]" id="contact_email" placeholder="Please enter your email" class="w-7/8 border border-gray-800 bg-transparent rounded-md px-5 py-2 text-black" required>
     </section>
 {% endform %}
-                <div class="flex items-center justify-between w-3/4">
+                <div class="flex flex-col space-y-5 md:space-y-0 md:flex-row items-center justify-between w-3/4">
                     <div id="footer-awards" class="flex items-center justify-center space-x-2">
                         <img src="{{ "great-taste.png" |  asset_url }}  " alt="Great Taste Award" class="h-20 w-20">
                         <img src="{{ "fine-food-guild.png" |  asset_url }}  " alt="Guild of Fine Food Member" class="h-20 w-20">
