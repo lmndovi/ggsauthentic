@@ -66,9 +66,13 @@
         <input type="email" name="contact[email]" id="contact_email" placeholder="Please enter your email" class="w-7/8 border border-gray-400 bg-transparent rounded-md px-5 py-2 text-white" required>
     </section>
 {% endform %}
-                
-   
-            <div class="flex space-x-2">
+                <div class="flex items-center justify-between w-3/4">
+                    <div id="footer-awards" class="flex">
+                        <img src="{{ "great-taste.png" |  asset_url }}  " alt="Great Taste Award" class="h-20 w-20">
+                        <img src="{{ "fine-food-guild.png" |  asset_url }}  " alt="Guild of Fine Food Member" class="h-20 w-20">
+                    </div>
+                    <div id="footer-payments">
+                        <div class="flex space-x-2">
                 <li>{% render 'icon-amex' %}</li>
                 <li>{% render 'icon-applepay' %}</li>
                 <li>{% render 'icon-googlepay' %}</li>
@@ -83,6 +87,10 @@
                 </p>
             </div>
         </div>
+                    </div>
+                </div>
+   
+            
 </div>
 
 
