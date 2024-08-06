@@ -6,9 +6,19 @@
     <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-12 justify-center mx-auto space-y-5">
         {% comment %} Store Logo/Social Icons {% endcomment %}
          <div class="flex flex-col items-center">
-            <a href="/" class="text-xl font-bold truncate">
-                <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-12 w-20">
-            </a>
+            <div class="flex flex-row">
+                <h1 class="text-black font-bold uppercase flex items-center">
+                    Join the <span class="px-2">
+                                        <a href="/" class="text-xl font-bold truncate">
+                                            <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-12 w-20">
+                                         </a>
+                                    </span>family
+                    
+
+                </h1>
+                
+            </div>
+            
             <ul class="flex space-x-2 mt-4">
                 <li>
                     <a href="https://www.facebook.com/p/Ggsauthentic-100063679520703/?paipv=0&eav=AfY9lGuMe8DrG0BCYhDQLCXjnCKvK3OKq8v3T54ugrNowIy3uKrv612HSMFqykmNC1Q&_rdr" target="_blank">
@@ -40,7 +50,7 @@
             <nav>
                {% for link in linklists.shop-footer.links %}
                     <div class="relative py-1">
-                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-800 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-900 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
                     </div>
                 {% endfor %}
             </nav>
@@ -53,7 +63,7 @@
             <nav>
                 {% for link in linklists.about-footer.links %}
                     <div class="relative py-1">
-                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-800 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-900 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
                     </div>
                 {% endfor %}
             </nav>
@@ -63,7 +73,7 @@
         {% comment %} Payment Options {% endcomment %}
         {% comment %} Copyright {% endcomment %}
         <div class="flex flex-col items-center justify-center space-y-3 ">
-            <h2 class="text-black">Sign Up</h2>
+            <h2 class="text-black w-1/2 text-center">Get the news first on exclusive offers and product launches!</h2>
             {% form 'contact' %}
     <section class="flex items-center justify-center space-x-3 w-full">
         <input type="hidden" name="form_type" value="customer">
