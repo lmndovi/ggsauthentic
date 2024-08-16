@@ -28,13 +28,13 @@
           "settings": {
           }
         },
-        "description": {
-          "type": "description",
+        "checkout_buttons": {
+          "type": "checkout_buttons",
           "settings": {
           }
         },
-        "checkout_buttons": {
-          "type": "checkout_buttons",
+        "description": {
+          "type": "description",
           "settings": {
           }
         }
@@ -45,8 +45,8 @@
         "price",
         "variant_selector",
         "quantity",
-        "description",
-        "checkout_buttons"
+        "checkout_buttons",
+        "description"
       ],
       "settings": {
       }

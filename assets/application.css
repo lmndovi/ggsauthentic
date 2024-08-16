@@ -884,6 +884,10 @@ video {
   width: 18rem;
 }
 
+.w-1\/4 {
+  width: 25%;
+}
+
 .max-w-36 {
   max-width: 9rem;
 }
@@ -1722,6 +1726,10 @@ video {
 }
 
 @media (min-width: 640px) {
+  .sm\:mb-0 {
+    margin-bottom: 0px;
+  }
+
   .sm\:gap-8 {
     gap: 2rem;
   }
