@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="bg-[#fbfcf1]">
+<html class="bg-[#fbfcf1] ">
   <head>
     <title>{{ page_title }}</title>
     <meta charset="utf-8">
@@ -17,7 +17,7 @@
     [x-cloak] { display: none !important;}
   </style>
   </head>
-  <body >
+  <body class="overflow-x-hidden sm:overflow-x-auto">
     {% section 'header' %}
     <main role="main">
       {{ content_for_layout }}

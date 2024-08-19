@@ -1195,6 +1195,10 @@ video {
   overflow-y: auto;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2043,6 +2047,10 @@ video {
 
   .sm\:gap-8 {
     gap: 2rem;
+  }
+
+  .sm\:overflow-x-auto {
+    overflow-x: auto;
   }
 
   .sm\:p-8 {
