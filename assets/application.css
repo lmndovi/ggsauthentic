@@ -898,6 +898,14 @@ video {
   height: 24rem;
 }
 
+.h-\[22rem\] {
+  height: 22rem;
+}
+
+.h-\[100vw\] {
+  height: 100vw;
+}
+
 .min-h-80 {
   min-height: 20rem;
 }
