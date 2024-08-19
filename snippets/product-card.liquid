@@ -2,8 +2,8 @@
     <div class=" bg-transparent  rounded-lg overflow-hidden group">
             <a href="{{ product.url }}">
             {% if product.media.size > 1 %}
-                  {% comment %} Added margin to centre images {% endcomment %}
-                <div class="h-80 overflow-hidden relative ml-10 sm:ml-0">
+  
+                <div class="h-80 overflow-hidden relative">
                     <img class="w-80 h-80 md:w-full md:h-full object-cover transition duration-1000 ease-in-out group-hover:opacity-0 absolute inset-0" src="{{ product.media.first | img_url: 'medium' }}" alt="{{ product.media.first.preview_image.alt }}">
                     <img class="w-80 h-80 md:w-full md:h-full object-cover transition duration-1000 ease-in-out opacity-0 group-hover:opacity-100 hover:scale-105 absolute inset-0" src="{{ product.media[1] | img_url: 'medium' }}" alt="{{ product.media[1].preview_image.alt }}">
                 </div>
