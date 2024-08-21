@@ -24,20 +24,16 @@
              <p class="text-gray-500 font-bold text-center">
                 {{ product.price |  money }}
             </p>
-            {% comment %} {% form 'product', product %} {% endcomment %}
-             <form action="/cart/add" method="post" class="add-to-cart-form">
-                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                
+            {% form 'product', product %}
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                 <div class="relative mt-8">
                     <div class="h-12 w-full bg-black rounded-lg ">
-                        <button type="submit" class="relative uppercase text-md bg-[#ffb045] text-black border-[0.5px] border-black rounded-lg font-bold py-2 px-1 w-full add-to-cart">
+                        <button type="submit" class="relative uppercase text-md bg-[#ffb045] text-black border-[0.5px] border-black rounded-lg font-bold py-2 px-1 w-full">
                             Add to cart
                         </button>
                     </div>
                 </div>
-             </form>
-               
-            {% comment %} {% endform %} {% endcomment %}
+            {% endform %}
             
         </div>
        
@@ -45,53 +41,3 @@
 
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Select all forms that add items to the cart
-        const cartForms = document.querySelectorAll('form[action="/cart/add"]');
-
-        cartForms.forEach(function(form) {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent default form submission
-
-                const formData = new FormData(form);
-
-                // Get the variant ID and quantity from the form data
-                const variantId = formData.get('id');
-                const quantity = formData.get('quantity') || 1; // Default to 1 if not specified
-
-                // Disable the submit button to prevent multiple clicks
-                const submitButton = form.querySelector('button[type="submit"]');
-                submitButton.disabled = true;
-                submitButton.innerText = "Adding...";
-
-                // Use fetch to add the item to the cart
-                fetch('/cart/add.js', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id: variantId,
-                        quantity: quantity
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Item added to cart:', data);
-                    // Optionally update the cart UI or show a confirmation message
-                })
-                .catch(error => {
-                    console.error('Error adding item to cart:', error);
-                })
-                .finally(() => {
-                    // Re-enable the button after the request is complete
-                    submitButton.disabled = false;
-                    submitButton.innerText = "Add to cart";
-                });
-            });
-        });
-    });
-</script>

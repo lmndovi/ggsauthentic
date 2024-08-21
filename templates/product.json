@@ -50,9 +50,25 @@
       ],
       "settings": {
       }
+    },
+    "17240919406b968976": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_preview_badge_RD3RJ7": {
+          "type": "shopify:\/\/apps\/judge-me-reviews\/blocks\/preview_badge\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_RD3RJ7"
+      ],
+      "settings": {
+      }
     }
   },
   "order": [
-    "template"
+    "template",
+    "17240919406b968976"
   ]
 }
