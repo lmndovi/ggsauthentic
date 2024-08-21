@@ -27,7 +27,7 @@
             {% comment %} {% form 'product', product %} {% endcomment %}
              <form action="/cart/add" method="post" class="add-to-cart-form">
                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                 <input type="number" name="quantity" value="1" min="1">
+                
                 <div class="relative mt-8">
                     <div class="h-12 w-full bg-black rounded-lg ">
                         <button type="submit" class="relative uppercase text-md bg-[#ffb045] text-black border-[0.5px] border-black rounded-lg font-bold py-2 px-1 w-full add-to-cart">
