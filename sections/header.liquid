@@ -72,13 +72,13 @@
       <div class="flex justify-center lg:flex-1 truncate">
         <a href="/" class=" font-bold truncate flex flex-col justify-center items-center space-y-2">
             <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-12 w-20">
-            <p class="uppercase text-center text-sm opacity-80">GGSAuthentic</p>
+            <p class="hidden md:block uppercase text-center text-sm opacity-80">GGSAuthentic</p>
         </a>
       </div>
 
       <!-- Cart, Login and Resgister -->
 
-      <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
+      <div class="flex items-center justify-end md:flex-1 space-x-5">
         <button x-on:click="searchBarOpen = true" type="button" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
             {% render 'icon-search' %}
         </button>
