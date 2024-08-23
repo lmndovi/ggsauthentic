@@ -25,6 +25,7 @@
             background-color: #fbc00d;
             opacity: 0.8;
         }
+
         .variant-label input[type="radio"]:checked + .variant-text {
             background-color: #fbc00d;
             color: black;
@@ -38,7 +39,7 @@
             }
 </style>
 
-<div class="max-w-6xl mx-auto my-8 md:mt-8 sm:mb-0">
+<div class="max-w-6xl mx-auto my-8 md:mt-8 sm:mb-0" x-data="{ showMoreInfo: false }">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div class="product--medias">
             <div class="hidden md:block bg-[#a7c248]/80">
@@ -162,39 +163,69 @@
                             
                         {% when 'quantity' %}
                             <div class="my-3">
-    <label for="Quantity-{{ section.id }}">Quantity</label>
+                            <label for="Quantity-{{ section.id }}">Quantity</label>
 
-    <div class="my-2 flex items-center justify-center w-1/4">
-        <button 
-            type="button" 
-            class="  text-gray-900 font-bold text-lg h-9 w-9 rounded-full border-2 flex items-center justify-center border-black opacity-85 hover:border-gray-400" 
-            onclick="changeQuantity(-1)"
-        >
-            -
-        </button>
-        <input 
-            type="number" 
-            name="quantity" 
-            id="Quantity-{{ section.id }}" 
-            value="1" 
-            min="1" 
-            class="w-1/2 py-3 text-center text-4xl font-semibold bg-transparent"
-            readonly
-        >
-        <button 
-            type="button" 
-            class="  text-gray-900 font-bold  text-lg h-9 w-9 rounded-full border-2 flex items-center justify-center border-black opacity-85 hover:border-gray-400" 
-            onclick="changeQuantity(1)"
-        >
-            +
-        </button>
-    </div>
-</div>
+                            <div class="my-2 flex items-center justify-center w-1/4">
+                                <button 
+                                    type="button" 
+                                    class="  text-gray-900 font-bold text-lg h-9 w-9 rounded-full border-2 flex items-center justify-center border-black opacity-85 hover:border-gray-400" 
+                                    onclick="changeQuantity(-1)"
+                                >
+                                    -
+                                </button>
+                                <input 
+                                    type="number" 
+                                    name="quantity" 
+                                    id="Quantity-{{ section.id }}" 
+                                    value="1" 
+                                    min="1" 
+                                    class="w-1/2 py-3 text-center text-4xl font-semibold bg-transparent"
+                                    readonly
+                                >
+                                <button 
+                                    type="button" 
+                                    class="  text-gray-900 font-bold  text-lg h-9 w-9 rounded-full border-2 flex items-center justify-center border-black opacity-85 hover:border-gray-400" 
+                                    onclick="changeQuantity(1)"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
                         {% when 'description' %}
                             <div class="my-3">
-                                <p class="text-gray-700 ">{{ product.description }}</p>
+                                {% if product.description contains '<!--SPLIT-->' %}
+                                    <p class="text-gray-700 ">{{ product.description | split: '<!--SPLIT-->' |  first}}</p>
+                                    <button
+                                        type="button" 
+                                        class="text-white bg-gray-900  border border-gray-900 py-2 px-4 rounded-lg text-md font-semibold cursor-pointer mt-2"
+                                        x-on:click="showMoreInfo = true"
+                                        x-show="!showMoreInfo"
+                                    >
+                                        Read More
+                                    </button>
+                                    <!-- Hidden div for more info -->
+                                    <div
+                                        class="text-gray-700 mt-2" 
+                                        x-show="showMoreInfo" 
+                                        x-on:click.away="showMoreInfo = false"
+                                        x-transition 
+                                    >
+                                
+                                        {{ product.description | split: '<!--SPLIT-->' | last }}
+                                        <button 
+                                            type="button"
+                                            class="text-blue-500 underline cursor-pointer mt-2 block" 
+                                            x-on:click="showMoreInfo = false"
+                                        >
+                                            See Less
+                                        </button>
+                                 </div>
+                                 {% else %}
+                                    <p class="text-gray-700 ">{{ product.description}}</p>
+                                {% endif %}
+                                
                             </div>
-
+                                
                       
                         {% else %}
                             
@@ -327,11 +358,7 @@
             "name": "Title",
             "limit": 1
         },
-        {
-            "type": "review_widget",
-            "name": "Review Widget",
-            "limit": 1
-        },
+    
         {
             "type": "price",
             "name": "Price",

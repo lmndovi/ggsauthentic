@@ -1,12 +1,12 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "template": {
@@ -14,38 +14,31 @@
       "blocks": {
         "vendor": {
           "type": "vendor",
-          "settings": {
-          }
+          "settings": {}
         },
         "title": {
           "type": "title",
-          "settings": {
-          }
+          "settings": {}
         },
         "price": {
           "type": "price",
-          "settings": {
-          }
+          "settings": {}
         },
         "variant_selector": {
           "type": "variant_selector",
-          "settings": {
-          }
+          "settings": {}
         },
         "quantity": {
           "type": "quantity",
-          "settings": {
-          }
+          "settings": {}
         },
         "checkout_buttons": {
           "type": "checkout_buttons",
-          "settings": {
-          }
+          "settings": {}
         },
         "description": {
           "type": "description",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -57,27 +50,19 @@
         "checkout_buttons",
         "description"
       ],
-      "settings": {
-      }
+      "settings": {}
     },
     "17240919406b968976": {
       "type": "apps",
       "blocks": {
         "judge_me_reviews_preview_badge_RD3RJ7": {
-          "type": "shopify:\/\/apps\/judge-me-reviews\/blocks\/preview_badge\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-          }
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
         }
       },
-      "block_order": [
-        "judge_me_reviews_preview_badge_RD3RJ7"
-      ],
-      "settings": {
-      }
+      "block_order": ["judge_me_reviews_preview_badge_RD3RJ7"],
+      "settings": {}
     }
   },
-  "order": [
-    "template",
-    "17240919406b968976"
-  ]
+  "order": ["template", "17240919406b968976"]
 }

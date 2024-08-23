@@ -24,7 +24,7 @@
              <p class="text-gray-500 font-bold text-center">
                 {{ product.price |  money }}
             </p>
-            {% comment %} {% form 'product', product %} {% endcomment %}
+
              <form action="/cart/add" method="post" class="add-to-cart-form">
                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                 
