@@ -84,22 +84,15 @@
                             <div class="my-3">
                                 <h1 class="text-3xl text-gray-900">{{ product.title }}</h1>
                             </div>
-                            {% when 'review_widget' %}
+                            
                             <div class="my-3">
-                                <!-- Judge.me review widget code -->
-                                <div class="jdgm-rev">
-                                    <!-- Judge.me script should be included on your theme or in the script section -->
-                                    <script type="text/javascript">
-                                        (function() {
-                                            var d = document, s = d.createElement('script');
-                                            s.src = 'https://cdn.judge.me/widget.js'; // replace with your Judge.me script URL if different
-                                            s.async = true;
-                                            d.getElementsByTagName('head')[0].appendChild(s);
-                                        })();
-                                    </script>
-                                    <!-- Adjust the div below according to Judge.me widget configuration -->
-                                    <div id="jdgm-reviews"></div>
-                                </div>
+                                <!-- Start of Judge.me code --> 
+                                <div class='jdgm-widget jdgm-preview-badge' data-id='{{ product.id }}'> 
+                                    {{ product.metafields.judgeme.badge }} 
+                                </div> 
+                                <!-- End of Judge.me code -->
+
+                            
                             </div>
                         {% when 'price' %}
                             <div class="my-3 font-bold" id="price-{{ section.id }}">
@@ -241,6 +234,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     class VariantSelector extends HTMLElement {

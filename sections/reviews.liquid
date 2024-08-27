@@ -19,17 +19,22 @@
                     Based on 300+ reviews
                 </p>
                 <div class="grid grid-cols-3 gap-10 items-center justify-center mx-auto">
-                    <div class="ml-0 md:ml-10">
-                        {% render 'icon-chevron-left' %}
-                    </div>
-                    <div class="flex flex-col space-y-3 uppercase text-sm">
-                        <p class="font-bold">Love the mango, pineapple, cucumber & mango and marinade</p>
-                        <p>&quot;These sauces taste amazing 10/10. The taste is a massive wow&quot;</p>
-                        <p class="lowercase font-bold underline decoration-4 underline-offset-8">@the_hungry_guru</p>                
-                </div>
-                <div>
-                    {% render 'icon-chevron-right' %}
-                </div>
+                    <!-- Start of Judge.me code --> 
+  <div class='jdgm-carousel-wrapper'> 
+    {% assign jm_metafields = shop.metafields.judgeme %} 
+    <div class='jdgm-carousel-title-and-link'> 
+      <h2 class='jdgm-carousel-title'>Let customers speak for us</h2> 
+      <span class='jdgm-all-reviews-rating-wrapper' href='javascript:void(0)'> 
+        <span style='display:block' data-score='{{ jm_metafields.all_reviews_rating }}' class='jdgm-all-reviews-rating' aria-label='{{ jm_metafields.all_reviews_rating }} stars' tabindex='0' role='img'></span> 
+        <span style='display: block' class='jdgm-carousel-number-of-reviews' data-number-of-reviews='{{ jm_metafields.all_reviews_count }}'> 
+from {{ shop.metafields.judgeme.all_reviews_count }} reviews 
+        </span> 
+      </span> 
+    </div> 
+    {{ jm_metafields.featured_carousel }} 
+  </div> 
+<!-- End of Judge.me code -->
+
                 </div>
                 
         </div>
