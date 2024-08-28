@@ -38,6 +38,10 @@
     "discount-signup": {
       "type": "discount-signup",
       "settings": {
+        "title": "Featured Collection",
+        "featured_collection": "gift-something-spicy",
+        "number_of_products_to_show": 4,
+        "button_text": "View All"
       }
     },
     "pagefly-home": {
