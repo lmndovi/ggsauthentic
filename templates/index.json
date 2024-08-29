@@ -1,3 +1,12 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
 {
   "sections": {
     "banner": {
@@ -43,12 +52,6 @@
         "number_of_products_to_show": 4,
         "button_text": "View All"
       }
-    },
-    "pagefly-home": {
-      "type": "pagefly-home",
-      "disabled": true,
-      "settings": {
-      }
     }
   },
   "order": [
@@ -56,7 +59,6 @@
     "featured-collection",
     "secondary-collection",
     "reviews",
-    "discount-signup",
-    "pagefly-home"
+    "discount-signup"
   ]
 }
