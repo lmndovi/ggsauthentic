@@ -189,7 +189,7 @@
                                 </div>
                                         {% when 'checkout_buttons' %}
                             <div class="my-3">
-                                <button type="submit" name="add" class="w-1/2 px-6 py-4 bg-[#ff3232] text-white uppercase  font-bold  tracking-wide text-xl hover:bg-opacity-70 rounded-2xl my-2"
+                                <button type="submit" name="add" class="w-1/2 px-6 py-4 bg-[#ff3232] text-white uppercase  font-bold  tracking-wide text-md md:text-xl hover:bg-opacity-70 rounded-2xl my-2"
                                     {% if selected_variant.available == false %}
                                         disabled
                                     {% endif %}
@@ -209,7 +209,7 @@
                             <div class="my-2 flex items-center justify-center w-1/4">
                                 <button 
                                     type="button" 
-                                    class="  text-gray-900 font-bold text-lg h-9 w-9 rounded-full border-2 flex items-center justify-center border-black opacity-85 hover:border-gray-400" 
+                                    class="  text-gray-900 font-bold text-lg h-7 w-10 md:h-9 md:w-9 rounded-full border-2 flex items-center justify-center border-black opacity-85 hover:border-gray-400" 
                                     onclick="changeQuantity(-1)"
                                 >
                                     -
@@ -220,12 +220,12 @@
                                     id="Quantity-{{ section.id }}" 
                                     value="1" 
                                     min="1" 
-                                    class="w-1/2 py-3 text-center text-4xl font-semibold bg-transparent"
+                                    class="w-1/2 py-3 text-center text-3xl md:text-4xl font-semibold bg-transparent"
                                     readonly
                                 >
                                 <button 
                                     type="button" 
-                                    class="  text-gray-900 font-bold  text-lg h-9 w-9 rounded-full border-2 flex items-center justify-center border-black opacity-85 hover:border-gray-400" 
+                                    class="  text-gray-900 font-bold  text-lg h-7 w-10  md:h-9 md:w-9 rounded-full border-2 flex items-center justify-center border-black opacity-85 hover:border-gray-400" 
                                     onclick="changeQuantity(1)"
                                 >
                                     +
