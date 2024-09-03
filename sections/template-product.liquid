@@ -14,7 +14,7 @@
 
 .swiper-container.main-swiper .swiper-slide img {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
     object-fit: contain;
 }
@@ -30,9 +30,8 @@
 }
 
 .swiper-container.thumb-swiper {
-    width: 100%;
+    width: 70%;
     height: auto;
-    padding-left: 10%;
 }
 
 .swiper-slide {
@@ -80,13 +79,13 @@
 <div class=" mx-auto my-8 md:mt-8 sm:mb-0" x-data="{ showMoreInfo: false }">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div class="product--medias">
-            <div class="bg-[#a7c248]/80 h-full">
+            <div class="bg-[#a7c248]/80 h-full flex flex-col justify-between">
                 <!-- Main Swiper for Large Image -->
-            <div class="swiper-container main-swiper">
+            <div class="swiper-container main-swiper flex-1">
                 <div class="swiper-wrapper">
                     {% for media in product.media %}
                         <div class="swiper-slide">
-                            <div class="h-[50vw] md:h-[30vw] overflow-hidden">
+                            <div class="h-[40vw]  overflow-hidden">
                                 {% render 'product-media', media: media %}
                             </div>
                         </div>
@@ -95,11 +94,11 @@
             </div>
 
             <!-- Thumbnails Swiper -->
-            <div class="swiper-container thumb-swiper mt-4">
+            <div class="swiper-container thumb-swiper mt-4 px-10">
                 <div class="swiper-wrapper">
-                    {% for media in product.media limit: 2%}
+                    {% for media in product.media%}
                         <div class="swiper-slide cursor-pointer">
-                            <div class="h-[20vw] md:h-[10vw] overflow-hidden p-2">
+                            <div class="h-12 md:h-20">
                                 {% render 'product-media', media: media %}
                             </div>
                         </div>
@@ -109,34 +108,7 @@
             </div>
             
         </div>
-            {% comment %} <div class="hidden md:block bg-[#a7c248]/80">
-                {% for media in product.media %}
-                    <div class="h-100 overflow-hidden p-2">
-                        {% render 'product-media', media: media %}
-                    </div>
-                {% endfor %}
-            </div> {% endcomment %}
-
-            {% comment %} <div class="md:hidden">
-                <div class="swiper">
-                    <div class="swiper-wrapper">
-                        {% for media in product.media %}
-                            <div class="swiper-slide">
-                                <div class="h-[100vw] overflow-hidden p-2">
-                                    {% render 'product-media', media: media %}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    <div class="swiper-pagination"></div>
-
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-button-next"></div>
-                </div>
-            </div> {% endcomment %}
-
-
+      
         <div class="product--information sticky top-5 p-2">
             {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
                 <input type="hidden" name="id" value="{{ selected_variant.id }}">
@@ -257,7 +229,7 @@
                                     <p class="text-gray-700 ">{{ product.description | split: '<!--SPLIT-->' |  first}}</p>
                                     <button
                                         type="button" 
-                                        class="flex items-center justify-center underline  py-2 rounded-lg text-md font-semibold cursor-pointer mt-4 opacity-80"
+                                        class="flex items-center justify-center underline  py-2 rounded-lg text-md font-semibold cursor-pointer mt-4 opacity-50"
                                         x-on:click="showMoreInfo = true"
                                         x-show="!showMoreInfo"
                                     >
@@ -277,7 +249,7 @@
                                         {{ product.description | split: '<!--SPLIT-->' | last }}
                                         <button 
                                             type="button"
-                                            class="flex items-center justify-center underline cursor-pointer mt-2 font-semibold opacity-80" 
+                                            class="flex items-center justify-center underline cursor-pointer mt-2 font-semibold opacity-50" 
                                             x-on:click="showMoreInfo = false"
                                         >
                                             See less
@@ -410,6 +382,9 @@
         const mainSwiper = new Swiper('.main-swiper', {
             spaceBetween: 10,
             effect: 'fade', // Optional: Adds fade transition effect
+            fadeEffect: {
+                crossFade: true, // Enables cross-fade transition
+            },
             loop: true, // Optional: Enables loop mode
             thumbs: {
                 swiper: thumbSwiper
