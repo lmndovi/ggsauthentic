@@ -954,6 +954,14 @@ video {
   height: 2rem;
 }
 
+.h-48 {
+  height: 12rem;
+}
+
+.h-96 {
+  height: 24rem;
+}
+
 .min-h-80 {
   min-height: 20rem;
 }
@@ -1013,6 +1021,10 @@ video {
 
 .w-screen {
   width: 100vw;
+}
+
+.w-16 {
+  width: 4rem;
 }
 
 .max-w-2xl {
@@ -1469,6 +1481,11 @@ video {
 
 .bg-top {
   background-position: top;
+}
+
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .object-cover {
@@ -2059,6 +2076,11 @@ video {
     overflow-x: auto;
   }
 
+  .sm\:object-contain {
+    -o-object-fit: contain;
+       object-fit: contain;
+  }
+
   .sm\:p-8 {
     padding: 2rem;
   }
@@ -2179,6 +2201,10 @@ video {
 
   .md\:w-full {
     width: 100%;
+  }
+
+  .md\:w-\[70vw\] {
+    width: 70vw;
   }
 
   .md\:flex-1 {
