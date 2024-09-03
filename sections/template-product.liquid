@@ -314,6 +314,21 @@
             </div>
         </div>
     </div>
+    <!-- Related Products Section -->
+<div class="my-12 ">
+    <h2 class="text-center text-2xl font-bold text-gray-700 mb-6">Related Products</h2>
+    <div class="flex justify-center space-x-4">
+        {% assign all_products = collections.all.products | sample: 3 %}
+        {% for product in all_products  limit: 3%}
+        <div class="text-center">
+            <a href="{{ product.url }}">
+                <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="w-48 h-48 object-cover mx-auto mb-2">
+                <p class="text-gray-600 font-semibold">{{ product.title |  truncatewords: 2 }}</p>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 </div>
 
 
