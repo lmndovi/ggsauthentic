@@ -6,27 +6,15 @@
         <h2 class="text-3xl text-center uppercase font-normal tracking-wide">
             From genuine customers
         </h2>
-        <div class="flex flex-col items-center justify-center text-center space-y-5">
-            <div class="flex items-center justify-center opacity-70">
-                {% for i in (1..5) %}
-                    {% render 'icon-star' %}
-                {% endfor %}
-                </div>
-                <h3 class="font-bold text-xl">
-                    4.9 out of 5
-                </h3>
-                <p class="text-gray-400">
-                    Based on 300+ reviews
-                </p>
-                <div class="flex items-center justify-center mx-auto">
+       
                     <!-- Start of Judge.me code --> 
   <div class='jdgm-carousel-wrapper'> 
     {% assign jm_metafields = shop.metafields.judgeme %} 
     <div class='jdgm-carousel-title-and-link'> 
-      <h2 class='jdgm-carousel-title'>Let customers speak for us</h2> 
+      <h2 class='jdgm-carousel-title text-gray-400'>Let customers speak for us</h2> 
       <span class='jdgm-all-reviews-rating-wrapper' href='javascript:void(0)'> 
         <span style='display:block' data-score='{{ jm_metafields.all_reviews_rating }}' class='jdgm-all-reviews-rating' aria-label='{{ jm_metafields.all_reviews_rating }} stars' tabindex='0' role='img'></span> 
-        <span style='display: block' class='jdgm-carousel-number-of-reviews' data-number-of-reviews='{{ jm_metafields.all_reviews_count }}'> 
+        <span style='display: block; color: #9ca3af;'class='jdgm-carousel-number-of-reviews' data-number-of-reviews='{{ jm_metafields.all_reviews_count }}'> 
 from {{ shop.metafields.judgeme.all_reviews_count }} reviews 
         </span> 
       </span> 
