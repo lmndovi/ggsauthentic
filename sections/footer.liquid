@@ -6,6 +6,19 @@
     <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-12 justify-center mx-auto space-y-5">
         {% comment %} Store Logo/Social Icons {% endcomment %}
          <div class="flex flex-col items-center">
+            {% comment %} Back to Top Button {% endcomment %}
+             <div>
+                <button 
+                    type="button"
+                    class="flex items-center justify-center underline cursor-pointer mb-6 font-semibold opacity-50"
+                    onclick="scrollToTop()"
+                >
+                    Back to Top
+                    <span class="mt-1 mx-1">
+                        {% render 'icon-chevron-up' %}
+                    </span>
+                </button>
+             </div>
             <div class="flex flex-row">
                 <h1 class="text-black font-bold uppercase flex items-center">
                     Join the <span class="px-2">
@@ -119,6 +132,12 @@
             
 </div>
 
+
+  <script>
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 
 
 
