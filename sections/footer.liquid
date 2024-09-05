@@ -3,22 +3,23 @@
 
 
 <div class="bg-[#fbc00d]/90 text-black pb-10">
-    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-12 justify-center mx-auto space-y-5">
-        {% comment %} Store Logo/Social Icons {% endcomment %}
-         <div class="flex flex-col items-center">
-            {% comment %} Back to Top Button {% endcomment %}
-             <div>
+{% comment %} Back to Top Button {% endcomment %}
+             <div class="flex justify-center items-center">
                 <button 
                     type="button"
-                    class="flex items-center justify-center underline cursor-pointer mb-6 font-semibold opacity-50"
+                    class="flex items-center justify-center underline cursor-pointer mt-10 font-semibold opacity-60 "
                     onclick="scrollToTop()"
                 >
-                    Back to Top
+                    Back to top
                     <span class="mt-1 mx-1">
                         {% render 'icon-chevron-up' %}
                     </span>
                 </button>
              </div>
+    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-12 justify-center mx-auto space-y-5">
+        {% comment %} Store Logo/Social Icons {% endcomment %}
+         <div class="flex flex-col items-center">
+    
             <div class="flex flex-row">
                 <h1 class="text-black font-bold uppercase flex items-center">
                     Join the <span class="px-2">
