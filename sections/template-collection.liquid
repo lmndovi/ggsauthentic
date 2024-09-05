@@ -7,7 +7,7 @@
         </h1>
     </div>
     <div class="flex bg-[#ffb045] py-3">
-        <nav class="flex justify-center items-center mx-auto space-x-10 font-bold tracking-wide">
+        <nav class="flex justify-center items-center mx-auto space-x-5 md:space-x-10 font-bold tracking-wide md:px-0 px-8">
                {% for link in linklists.fusion-menu.links %}
                     <div class="relative py-1">
                         <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-900 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
@@ -20,7 +20,7 @@
         
 
         <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {% for product in collection.products %}
                     {% render 'secondary-product-card', product: product %}
                 

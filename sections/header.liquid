@@ -26,7 +26,7 @@
     
     <div  class="flex justify-between items-center px-5 py-6 md:justify-start md:space-x-10">
         <div>
-            <img src="{{ "great-taste.png" |  asset_url }}  " alt="Great Taste Award" class="h-10 w-10 md:h-14 md:w-14 lg:h-20 lg:w-20 ">
+            <img src="{{ "great-taste.png" |  asset_url }}  " alt="Great Taste Award" class="h-8 w-8 md:h-14 md:w-14 lg:h-20 lg:w-20 ">
         </div>
 
       <!-- STEP 1: CREATE THE HAMBURGER MENU BUTTON -->
@@ -74,7 +74,7 @@
        <!-- STORE NAME / STORE LOGO -->
       <div class="flex justify-center lg:flex-1 truncate">
         <a href="/" class=" font-bold truncate flex flex-col justify-center items-center space-y-2">
-            <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-12 w-20">
+            <img src="{{ "gilli_logo.png" |  asset_url }}  " alt="{{ shop.name }}" class="h-8 w-12 md:h-12 md:w-20">
             <p class="hidden md:block uppercase text-center text-sm opacity-80">GGSAuthentic</p>
         </a>
       </div>
@@ -140,7 +140,7 @@
                                 </button>
                                 <div x-show="{{ link_handle }}" @click.away="{{ link_handle }} = ! {{ link_handle }}" class="grid gap-y-7 py-3">
                                     {% for childlink in link.links %}
-                                        <a href="#" class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                                        <a href="{{ childlink.url }}" class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
                                         <span class="ml-3 text-base font-medium text-gray-500">
                                             {{ childlink.title}}</span>
                                         </a>
@@ -150,7 +150,7 @@
                            
                          </div>
                          {% else %}
-                                <a href="#" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                                <a href="{{ link.url }}" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
                                     {{ link.title }}
                                 </a>
                         {% endif %}
