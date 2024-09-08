@@ -6,6 +6,9 @@
             A fusion of flavours!
         </h1>
     </div>
+
+    
+
     <div class="flex bg-[#ffb045] py-3">
         <nav class="flex justify-center items-center mx-auto space-x-5 md:space-x-10 font-bold tracking-wide md:px-0 px-8">
                {% for link in linklists.fusion-menu.links %}
@@ -16,11 +19,21 @@
             </nav>
     </div>
     
-   
+   <!-- Sort Dropdown -->
+    <div class="flex items-center justify-end max-w-6xl mx-auto py-3 px-4">
+        <label for="sortOptions" class="mr-2 font-bold">Sort by:</label>
+        <select id="sortOptions" class="border border-gray-400 py-1 px-2 rounded-md bg-[#fbfcf1]">
+            <option value="default">Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="alphabetical-asc">Alphabetical: A-Z</option>
+            <option value="alphabetical-desc">Alphabetical: Z-A</option>
+        </select>
+    </div>
         
 
         <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="productGrid">
                 {% for product in collection.products %}
                     {% render 'secondary-product-card', product: product %}
                 
@@ -33,6 +46,48 @@
     
 
 </div>
+
+<script>
+    // Store the original product order
+    var productGrid = document.getElementById('productGrid'); 
+    var originalOrder = Array.from(productGrid.getElementsByClassName('product-card')); // Capture the original order of products
+
+    document.getElementById('sortOptions').addEventListener('change', function() {
+        var sortValue = this.value;  // Get the selected sorting option
+        var products = Array.from(productGrid.getElementsByClassName('product-card'));  // Get all product cards as an array
+
+        // Sorting logic based on the selected option
+        if (sortValue === 'price-asc') {
+            products.sort(function(a, b) {
+                return parseFloat(a.dataset.price) - parseFloat(b.dataset.price); // Sort by price, low to high
+            });
+        } else if (sortValue === 'price-desc') {
+            products.sort(function(a, b) {
+                return parseFloat(b.dataset.price) - parseFloat(a.dataset.price); // Sort by price, high to low
+            });
+        } else if (sortValue === 'alphabetical-asc') {
+            products.sort(function(a, b) {
+                return a.dataset.title.localeCompare(b.dataset.title); // Sort by title, A-Z
+            });
+        } else if (sortValue === 'alphabetical-desc') {
+            products.sort(function(a, b) {
+                return b.dataset.title.localeCompare(a.dataset.title); // Sort by title, Z-A
+            });
+        } else if (sortValue === 'default') {
+            // Reset to the original order
+            products = originalOrder.slice(); // Clone the original order to avoid modifying it
+        }
+
+        // Clear the current product grid
+        productGrid.innerHTML = '';
+
+        // Append the sorted (or original) products back to the grid
+        products.forEach(function(product) {
+            productGrid.appendChild(product);
+        });
+    });
+</script>
+
 
 {% schema %}
 {
