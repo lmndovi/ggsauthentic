@@ -20,7 +20,10 @@
   <style>
     [x-cloak] { display: none !important;}
   </style>
-  {% include 'pagefly-app-header' %}</head>
+  {% include 'pagefly-app-header' %}
+  <link rel="icon" href="{{ 'gilli_logo.png' | asset_url }}" type="image/x-icon">
+  <link rel="shortcut icon" href="{{ 'gilli_logo.png' | asset_url }}" type="image/x-icon">
+  </head>
   <body class="overflow-x-hidden sm:overflow-x-auto">
     <header id="top"></header>
     {% section 'header' %}
