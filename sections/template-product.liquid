@@ -105,7 +105,8 @@
             <div class="swiper-container main-swiper flex-1">
                 <div class="swiper-wrapper">
                     {% for media in product.media %}
-                        <div class="swiper-slide">
+                                    <div class="swiper-slide" data-media-id="{{ media.id }}">
+
                             <div class="h-[40vw]  overflow-hidden">
                                 {% render 'product-media', media: media %}
                             </div>
@@ -364,15 +365,35 @@
         }
 
         onVariantChange() {
-            this.getSelectedOptions();
-            this.getSelectedVariant();
+    this.getSelectedOptions();
+    this.getSelectedVariant();
 
-            if(this.currentVariant) {
-                this.updateURL();
-                this.updateFormID();
-                this.updatePrice();
+    if (this.currentVariant) {
+        this.updateURL();
+        this.updateFormID();
+        this.updatePrice();
+        this.updateMainImage();  // New function to update image
+    }
+}
+
+updateMainImage() {
+    if (this.currentVariant && this.currentVariant.featured_media) {
+        const mainSwiper = document.querySelector('.main-swiper .swiper-wrapper');
+        const slides = Array.from(mainSwiper.querySelectorAll('.swiper-slide'));
+
+        // Find the corresponding slide for the variant's featured image
+        slides.forEach(slide => {
+            if (slide.dataset.mediaId == this.currentVariant.featured_media.id) {
+                const swiperInstance = document.querySelector('.main-swiper').swiper;
+                const slideIndex = slides.indexOf(slide);
+
+                // Update the swiper to display the selected variant's image
+                swiperInstance.slideTo(slideIndex);
             }
-        }
+        });
+    }
+}
+
 
         getSelectedOptions() {
             this.options = Array.from(this.querySelectorAll('input[type="radio"]:checked'), (radio) => radio.value);

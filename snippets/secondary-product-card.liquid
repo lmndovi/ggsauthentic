@@ -41,3 +41,52 @@
         </div>
     </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Select all forms that add items to the cart
+        const cartForms = document.querySelectorAll('form[action="/cart/add"]');
+
+        cartForms.forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(form);
+
+                // Get the variant ID and quantity from the form data
+                const variantId = formData.get('id');
+                const quantity = formData.get('quantity') || 1; // Default to 1 if not specified
+
+                // Disable the submit button to prevent multiple clicks
+                const submitButton = form.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.innerText = "Adding...";
+
+                // Use fetch to add the item to the cart
+                fetch('/cart/add.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: variantId,
+                        quantity: quantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Item added to cart:', data);
+                    // Optionally update the cart UI or show a confirmation message
+                })
+                .catch(error => {
+                    console.error('Error adding item to cart:', error);
+                })
+                .finally(() => {
+                    // Re-enable the button after the request is complete
+                    submitButton.disabled = false;
+                    submitButton.innerText = "Add to cart";
+                });
+            });
+        });
+    });
+</script>
