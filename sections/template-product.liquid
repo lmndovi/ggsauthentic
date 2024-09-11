@@ -214,7 +214,7 @@
                                         Add to cart
                                     {% endif %}
                                 </button>
-                                <button type="submit" class="w-1/2 md:w-1/4 px-4 md:px-5 py-3 md:py-4 bg-[#ff3232] text-white uppercase  font-bold  tracking-wide text-md md:text-xl hover:bg-opacity-70 rounded-2xl my-2"
+                                <button type="button" id="buy-now-button" class="w-1/2 md:w-1/4 px-4 md:px-5 py-3 md:py-4 bg-[#ff3232] text-white uppercase  font-bold  tracking-wide text-md md:text-xl hover:bg-opacity-70 rounded-2xl my-2"
                                     {% if selected_variant.available == false %}
                                         disabled
                                     {% endif %}
@@ -348,19 +348,7 @@
         <div class="my-12 ">
             <h2 class="text-center text-2xl font-bold text-gray-700 mb-6">Related Products</h2>
             <div class="flex justify-center space-x-4">
-                {% comment %} {% assign all_products = collections.all.products |  reverse %}
-                {% for product in all_products  limit: 3%}
-                    {% unless product.id == current_product.id %}
-                        <div class="text-center">
-                            <a href="{{ product.url }}">
-                                <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="w-28 h-28 md:w-48 md:h-48 object-cover mx-auto mb-2 shadow-sm transition duration-1000 hover:scale-105">
-                                <p class="text-gray-600 font-semibold">{{ product.title |  truncatewords: 2 }}</p>
-                            </a>
-                        </div>
-                    {% endunless %}    
-                {% endfor %} {% endcomment %}
-
-                <!--Related Products API-->
+                           <!--Related Products API-->
                  <div id="related-products-container" class="flex justify-center space-x-4">
                     <!-- Related products will be injected here via JavaScript -->
                 </div>
@@ -565,7 +553,49 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+<script>
+document.getElementById('buy-now-button').addEventListener('click', function() {
+    const formData = {
+        items: [{
+            id: document.querySelector('input[name="id"]').value,
+            quantity: 1
+        }]
+    };
 
+    fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 422) {
+            // Handle error, e.g. product is out of stock
+            alert(data.message);
+        } else {
+            // Successfully added the item to the cart
+            updateCartBadge(data.item_count);  // Update cart badge
+
+            // Redirect to the cart page
+            window.location.href = '/cart';
+        }
+    })
+    .catch(error => {
+        console.error('Error adding to cart:', error);
+    });
+});
+
+// Function to update the cart badge
+function updateCartBadge(itemCount) {
+    const cartBadge = document.querySelector('#cart-badge');
+    if (cartBadge) {
+        cartBadge.textContent = itemCount;
+            }
+}
+</script>
 
 
 
