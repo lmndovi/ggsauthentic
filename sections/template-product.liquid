@@ -554,47 +554,47 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 <script>
-document.getElementById('buy-now-button').addEventListener('click', function() {
-    const formData = {
-        items: [{
-            id: document.querySelector('input[name="id"]').value,
-            quantity: 1
-        }]
-    };
+    document.getElementById('buy-now-button').addEventListener('click', function() {
+        const formData = {
+            items: [{
+                id: document.querySelector('input[name="id"]').value,
+                quantity: 1
+            }]
+        };
 
-    fetch('/cart/add.js', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 422) {
-            // Handle error, e.g. product is out of stock
-            alert(data.message);
-        } else {
-            // Successfully added the item to the cart
-            updateCartBadge(data.item_count);  // Update cart badge
+        fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 422) {
+                // Handle error, e.g. product is out of stock
+                alert(data.message);
+            } else {
+                // Successfully added the item to the cart
+                updateCartBadge(data.item_count);  // Update cart badge
 
-            // Redirect to the cart page
-            window.location.href = '/cart';
-        }
-    })
-    .catch(error => {
-        console.error('Error adding to cart:', error);
-    });
-});
-
-// Function to update the cart badge
-function updateCartBadge(itemCount) {
-    const cartBadge = document.querySelector('#cart-badge');
-    if (cartBadge) {
-        cartBadge.textContent = itemCount;
+                // Redirect to the cart page
+                window.location.href = '/cart';
             }
-}
+        })
+        .catch(error => {
+            console.error('Error adding to cart:', error);
+        });
+    });
+
+    // Function to update the cart badge
+    function updateCartBadge(itemCount) {
+        const cartBadge = document.querySelector('#cart-badge');
+        if (cartBadge) {
+            cartBadge.textContent = itemCount;
+                }
+    }
 </script>
 
 
