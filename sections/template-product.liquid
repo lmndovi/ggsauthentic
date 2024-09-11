@@ -201,9 +201,9 @@
                                         </variant-selector>
                                     {% endunless %}
                                 </div>
-                                        {% when 'checkout_buttons' %}
-                            <div class="my-3">
-                                <button type="submit" name="add" class="w-1/2 px-6 py-4 bg-[#ff3232] text-white uppercase  font-bold  tracking-wide text-md md:text-xl hover:bg-opacity-70 rounded-2xl my-2"
+                        {% when 'checkout_buttons' %}
+                            <div class="my-3 flex space-x-2 md:space-x-4">
+                                <button type="submit" name="add" class="w-1/2 md:w-1/4 px-4 md:px-5 py-3 md:py-4 bg-[#ff3232] text-white uppercase  font-bold  tracking-wide text-md md:text-xl hover:bg-opacity-70 rounded-2xl my-2"
                                     {% if selected_variant.available == false %}
                                         disabled
                                     {% endif %}
@@ -212,6 +212,18 @@
                                         Sold out
                                     {% else %}
                                         Add to cart
+                                    {% endif %}
+                                </button>
+                                <button type="submit" class="w-1/2 md:w-1/4 px-4 md:px-5 py-3 md:py-4 bg-[#ff3232] text-white uppercase  font-bold  tracking-wide text-md md:text-xl hover:bg-opacity-70 rounded-2xl my-2"
+                                    {% if selected_variant.available == false %}
+                                        disabled
+                                    {% endif %}
+                                    
+                                >
+                                    {% if selected_variant.available == false %}
+                                        Sold out
+                                    {% else %}
+                                        Buy Now
                                     {% endif %}
                                 </button>
                             </div>
@@ -322,6 +334,10 @@
                                 <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.33333,5.33333)"><path d="M24,5c-10.49341,0 -19,8.50659 -19,19c0,10.49341 8.50659,19 19,19c10.49341,0 19,-8.50659 19,-19c0,-10.49341 -8.50659,-19 -19,-19z" fill="black"></path><path d="M26.572,29.036h4.917l0.772,-4.995h-5.69v-2.73c0,-2.075 0.678,-3.915 2.619,-3.915h3.119v-4.359c-0.548,-0.074 -1.707,-0.236 -3.897,-0.236c-4.573,0 -7.254,2.415 -7.254,7.917v3.323h-4.701v4.995h4.701v13.729c0.931,0.14 1.874,0.235 2.842,0.235c0.875,0 1.729,-0.08 2.572,-0.194z" fill="white"></path></g></g>
                             </svg>
                         </a>
+                        <!--TikTok-->
+                        <a href="https://www.tiktok.com/@ggsauthentic">
+                            {% render 'icon-tiktok' %}
+                        </a>
                     </div>
                 </div>
 
@@ -332,7 +348,7 @@
         <div class="my-12 ">
             <h2 class="text-center text-2xl font-bold text-gray-700 mb-6">Related Products</h2>
             <div class="flex justify-center space-x-4">
-                {% assign all_products = collections.all.products |  reverse %}
+                {% comment %} {% assign all_products = collections.all.products |  reverse %}
                 {% for product in all_products  limit: 3%}
                     {% unless product.id == current_product.id %}
                         <div class="text-center">
@@ -342,7 +358,12 @@
                             </a>
                         </div>
                     {% endunless %}    
-                {% endfor %}
+                {% endfor %} {% endcomment %}
+
+                <!--Related Products API-->
+                 <div id="related-products-container" class="flex justify-center space-x-4">
+                    <!-- Related products will be injected here via JavaScript -->
+                </div>
             </div>
         </div>
         <div class="mt-10">
@@ -498,6 +519,53 @@ updateMainImage() {
 });
 
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const currentProductId = {{ product.id }};  // Get the current product ID dynamically
+
+    // API URL to fetch related products
+    const recommendationsUrl = '/recommendations/products.json?product_id=' + currentProductId;
+
+    // Fetch related products via AJAX
+    fetch(recommendationsUrl)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('related-products-container');
+
+            // Filter out the current product and limit the result to 3 related products
+            let relatedProducts = data.products.filter(function(product) {
+                return product.id !== currentProductId;  // Exclude the current product
+            }).slice(0, 3);  // Limit to 3 products
+
+            // Check if there are any related products after filtering
+            if (relatedProducts.length > 0) {
+                relatedProducts.forEach(function(product) {
+                    // Create a new div for each related product
+                    const productHtml = `
+                        <div class="text-center">
+                            <a href="${product.url}">
+                                <img src="${product.featured_image}" alt="${product.title}" class="w-28 h-28 md:w-48 md:h-48 object-cover mx-auto mb-2 shadow-sm transition duration-1000 hover:scale-105">
+                                <p class="text-gray-600 font-semibold">${product.title}</p>
+                            </a>
+                        </div>
+                    `;
+                    container.innerHTML += productHtml; // Append the product to the container
+                });
+            } else {
+                // Fallback if no recommendations are found
+                container.innerHTML = '<p class="text-gray-600">No related products found.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching related products:', error);
+        });
+});
+</script>
+
+
+
+
 
 
 
