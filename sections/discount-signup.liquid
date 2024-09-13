@@ -32,15 +32,15 @@
        {% endcomment %}
        
         {% form 'contact' %}
-            <div class="flex items-center justify-center space-x-1 md:space-x-10 px-2">
+            <div class="flex flex-col md:flex-row items-center justify-center space-x-1 md:space-x-10 px-2">
                 <h3 class="uppercase text-xl font-semibold max-w-36">
                     Sign Up! @ 20% Discount
                 </h3>
             <div class="flex items-center justify-center space-x-3 w-2/3">
                 <input type="hidden" name="form_type" value="customer">
                 <input type="hidden" name="utf8" value="✓">
-                <input type="email" name="contact[email]" id="contact_email" placeholder="Please enter your email" class="w-3/4 border border-black rounded-md px-5 py-2" required>
-                <button type="submit" class="uppercase text-lg font-semibold shadow-xl py-2 px-3 rounded-lg hover:bg-gray-200">
+                <input type="email" name="contact[email]" id="contact_email" placeholder="Please enter your email" class="w-1/2 md:w-3/4 border border-black rounded-md px-5 py-2" required>
+                <button type="submit" class="uppercase text-md md:text-lg font-semibold shadow-xl py-2 px-3 rounded-lg hover:bg-gray-200">
                     Subscribe
                 </button>
       

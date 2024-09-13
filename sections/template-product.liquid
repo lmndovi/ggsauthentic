@@ -98,7 +98,7 @@
 </style>
 
 <div class=" mx-auto my-8 md:mt-8 sm:mb-0" x-data="{ showMoreInfo: false, showDelivery: false }">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-2">
         <div class="product--medias">
             <div class="bg-[#a7c248]/80 h-full flex flex-col justify-between">
                 <!-- Main Swiper for Large Image -->
@@ -131,7 +131,7 @@
             
         </div>
       
-        <div class="product--information sticky top-5 p-2">
+        <div class="product--information sticky top-5 p-2 bg-[#f6f7e9]">
             {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
                 <input type="hidden" name="id" value="{{ selected_variant.id }}">
 
