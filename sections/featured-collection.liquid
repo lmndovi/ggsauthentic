@@ -3,16 +3,31 @@
         {{ section.settings.title }}
     </h1>
     <div class="max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             {% for product in section.settings.featured_collection.products %}
-                {% render 'product-card', product: product %}
+                {% if forloop.index <= 8 %}
+                    <!-- Show products 1-8 on all screen sizes -->
+                    {% render 'product-card', product: product %}
+                {% elsif forloop.index == 9 %}
+                    <!-- Show the 9th product only on medium screens or larger -->
+                    <div class="hidden md:block">
+                        {% render 'product-card', product: product %}
+                    </div>
+                {% endif %}
             {% else %}
                 {% for item in (1..9) %}
-                    {% render 'product-card-placeholder' %}
+                    {% if item <= 8 %}
+                        <!-- Show placeholders 1-8 on all screen sizes -->
+                        {% render 'product-card-placeholder' %}
+                    {% elsif item == 9 %}
+                        <!-- Show the 9th placeholder only on medium screens or larger -->
+                        <div class="hidden md:block">
+                            {% render 'product-card-placeholder' %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
             {% endfor %}
         </div>
-  
     </div>
    <!-- Button below the featured collection -->
     <div class="relative mt-8">
