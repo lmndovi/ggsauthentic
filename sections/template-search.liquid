@@ -15,7 +15,7 @@
             {% if search.results.size > 0 %}
                 <div class="max-w-6xl mx-auto">
                     <p class="text-gray-500 text-center my-10">
-                        {{ search.results.size }} results for the search term {{ search.terms | escape }}
+                        {{ search.results_count }} results for the search term "{{ search.terms | escape }}"
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {% for item in search.results %}
