@@ -36,6 +36,12 @@
                         placeholder="Password"
                         >
                     </div>
+
+                    <!-- Checkbox to toggle password visibility -->
+                <div class="my-2 flex items-center">
+                    <input type="checkbox" id="show_password" class="mr-2" onclick="togglePassword()">
+                    <label for="show_password" class="text-sm">Show password</label>
+                </div>
                 {% endif %}
 
                 <div class="my-2 text-sm">
@@ -118,3 +124,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    const togglePassword = () => {
+        const passwordField = document.getElementById("password");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+        } else {
+            passwordField.type = "password";
+        }
+    }
+</script>
