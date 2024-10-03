@@ -79,7 +79,7 @@
                     <div class="relative py-1">
                         {% if link.title == "Reviews" %}
                             <!-- Set href to scroll to the reviews section -->
-                            <a href="#reviews-section" class="uppercase text-sm font-md text-gray-900 hover:text-gray-500 hover:underline hover:underline-offset-4">
+                            <a href="{{ shop.url }}/#reviews-section" class="uppercase text-sm font-md text-gray-900 hover:text-gray-500 hover:underline hover:underline-offset-4">
                                 {{ link.title }}
                             </a>
                         {% else %}
@@ -93,9 +93,7 @@
             </nav>
         </div>     
     </div>
-     {% comment %} Email {% endcomment %}
-        {% comment %} Payment Options {% endcomment %}
-        {% comment %} Copyright {% endcomment %}
+
         <div class="flex flex-col items-center justify-center space-y-3 ">
             <h2 class="text-black w-1/2 text-center">Get the news first on exclusive offers and product launches!</h2>
             {% form 'contact' %}
@@ -111,16 +109,6 @@
                         <img src="{{ "great-taste.png" |  asset_url }}  " alt="Great Taste Award" class="h-20 w-20">
                         <img src="{{ "fine-food-guild.png" |  asset_url }}  " alt="Guild of Fine Food Member" class="h-20 w-20">
                     </div>
-{% comment %} 
-                    <div>
-                        <button type="button" class="flex justify-center items-center uppercase border border-gray-900 px-3 py-1 rounded-lg">
-                            <a href="##">
-                                Back to the top
-                                
-                               
-                            </a>
-                        </button>
-                    </div> {% endcomment %}
 
                     <div id="footer-payments">
                         <ul class="flex space-x-2 items-center">
