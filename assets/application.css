@@ -1043,6 +1043,10 @@ video {
   flex: 1 1 0%;
 }
 
+.flex-grow {
+  flex-grow: 1;
+}
+
 .table-auto {
   table-layout: auto;
 }
@@ -2196,6 +2200,10 @@ video {
 
   .md\:h-full {
     height: 100%;
+  }
+
+  .md\:min-h-full {
+    min-height: 100%;
   }
 
   .md\:w-1\/2 {
