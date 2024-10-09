@@ -16,7 +16,7 @@
                     </span>
                 </button>
              </div>
-    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-3 py-10 px-12 justify-center mx-auto space-y-5">
+    <div class="max-w-6xl grid grid-cols-1 md:grid-cols-4 py-10 px-12 justify-center mx-auto space-y-5">
         {% comment %} Store Logo/Social Icons {% endcomment %}
          <div class="flex flex-col items-center">
     
@@ -88,6 +88,19 @@
                                 {{ link.title }}
                             </a>
                         {% endif %}
+                    </div>
+                {% endfor %}
+            </nav>
+        </div>
+         {% comment %} Policies {% endcomment %}
+        <div class="mx-auto">
+            <h1 class="text-lg font-semibold text-black">
+                Policies
+            </h1>
+            <nav>
+               {% for link in linklists.footer-policies.links %}
+                    <div class="relative py-1">
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-900 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
                     </div>
                 {% endfor %}
             </nav>
