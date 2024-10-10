@@ -230,6 +230,8 @@
                             </div>
                             
                         {% when 'quantity' %}
+                            <div class="bg-[#a7c248]/80 h-1 w-screen -ml-2">
+                            </div>
                             <div class="my-3">
                             <label for="Quantity-{{ section.id }}">Quantity</label>
 
@@ -260,6 +262,8 @@
                             </div>
                         </div>
                         {% when 'description' %}
+                             <div class="bg-[#a7c248]/80 h-1 w-screen -ml-2">
+                            </div>
                             <div class="my-3">
                                 {% if product.description contains '<!--SPLIT-->' %}
                                     <p class="text-gray-700 ">{{ product.description | split: '<!--SPLIT-->' |  first}}</p>
