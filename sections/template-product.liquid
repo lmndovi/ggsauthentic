@@ -556,10 +556,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <script>
     document.getElementById('buy-now-button').addEventListener('click', function() {
+        const quantityInput = document.querySelector('input[name="quantity"]');  // Get the quantity input
+        const selectedQuantity = parseInt(quantityInput.value);  // Parse the quantity as an integer
+
         const formData = {
             items: [{
                 id: document.querySelector('input[name="id"]').value,
-                quantity: 1
+                quantity: selectedQuantity
             }]
         };
 
