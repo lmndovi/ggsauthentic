@@ -31,6 +31,32 @@
       {{ content_for_layout }}
     </main>
     {% section 'footer' %}
+    {% comment %} Modal for SignUp {% endcomment %}
+    {% if customer == null %}
+    <!-- Signup Modal -->
+    <div id="signup-popup" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
+  <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center border border-gray-300">
+    <h3 class="text-2xl font-bold mb-4">Sign up <a href="/account/register" class="text-blue-600 hover:underline">here</a> and get 20% off your order!</h3>
+    <p class="mb-6">Join our mailing list to receive your exclusive discount code.</p>
+    <button onclick="closePopup()" class="bg-red-500 text-white py-2 px-6 rounded-lg text-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+      Close
+    </button>
+  </div>
+</div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        if (!localStorage.getItem('signupPopupShown')) {
+          document.getElementById('signup-popup').style.display = 'block';
+          localStorage.setItem('signupPopupShown', 'true');
+        }
+      });
+
+      function closePopup() {
+        document.getElementById('signup-popup').style.display = 'none';
+      }
+    </script>
+  {% endif %}
   </body>
 
 </html>
