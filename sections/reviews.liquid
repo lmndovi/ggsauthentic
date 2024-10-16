@@ -22,30 +22,121 @@
           {{ jm_metafields.featured_carousel }} 
         </div> 
         <!-- End of Judge.me code -->
-          <div id="review-buttons" class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 justify-evenly my-3 p-5">
-            <a href="/products/cucumber-mango-hot#judgeme_product_reviews">
-            <button type="button" class="border border-white rounded-2xl py-1 px-4 hover:text-[#818589] hover:border-[#818589]">
-              Cucumber & Mango
-            </button>
-            </a>  
-            <a href="/products/mango-mild#judgeme_product_reviews">
-            <button type="button" class="border border-white rounded-2xl py-1 px-4 hover:text-[#818589] hover:border-[#818589]">
-              Mango
-            </button>
-            </a>
-            <a href="/products/pineapple-xtra-hot-1#judgeme_product_reviews">
-            <button type="button" class="border border-white rounded-2xl py-1 px-4 hover:text-[#818589] hover:border-[#818589]">
-              Pineapple
-            </button>
-            </a>
-            <a href="/products/marinade-spicy#judgeme_product_reviews">
-              <button type="button" class="border border-white rounded-2xl py-1 px-4 hover:text-[#818589] hover:border-[#818589]">
-                Marinade
-              </button>
-            </a>
-      </div>
-      </div>               
-  </div>     
+
+  <!-- Start of Review Links Carousel -->
+        <div class="relative flex items-center justify-center w-full overflow-hidden">
+          
+            <!-- Left Chevron -->
+            <div id="left-chevron" class="absolute left-0 z-10 cursor-pointer p-2 hover:text-[#818589]">
+                <button type="button">
+                    {% render 'icon-chevron-left' %}
+                </button>
+            </div>
+
+            <!-- Carousel Wrapper -->
+            <div id="review-button-wrapper" class="w-full overflow-hidden max-w-[80%] mx-auto">
+                <div id="review-buttons" class="flex transition-transform duration-300 ease-in-out space-x-5">
+                    <!-- Buttons will be dynamically generated here -->
+                </div>
+            </div>
+
+            <!-- Right Chevron -->
+            <div id="right-chevron" class="absolute right-0 z-10 cursor-pointer p-2 hover:text-[#818589]">
+                <button type="button">
+                    {% render 'icon-chevron-right' %}
+                </button>
+            </div>
+
+        </div>
+        <!-- End of Carousel -->
     </div>
 </div>
+
+<!-- JavaScript for Infinite Loop Carousel -->
+<script>
+  const reviewLinks = [
+    { title: "Cucumber & Mango", url: "/products/cucumber-mango-hot#judgeme_product_reviews" },
+    { title: "Mango", url: "/products/mango-mild#judgeme_product_reviews" },
+    { title: "Pineapple", url: "/products/pineapple-xtra-hot-1#judgeme_product_reviews" },
+    { title: "Marinades", url: "/products/marinade-spicy#judgeme_product_reviews" },
+    { title: "Boozy Blu", url: "/products/boozy-blu#judgeme_product_reviews" },
+    { title: "Hat Gyal", url: "/products/hat-gyal#judgeme_product_reviews" },
+    { title: "Strawberry", url: "/products/strawberry-hot#judgeme_product_reviews" }
+  ];
+
+  let currentIndex = 0; // Track the current index
+  const visibleItems = 3; // Show 3 items at a time
+
+  // Duplicate the items to allow for an infinite loop
+  const loopedReviewLinks = [...reviewLinks, ...reviewLinks, ...reviewLinks];
+
+  // Function to generate buttons dynamically
+  function generateReviewButtons() {
+    const reviewButtonsContainer = document.getElementById("review-buttons");
+
+    // Clear existing buttons (if any)
+    reviewButtonsContainer.innerHTML = "";
+
+    // Create button elements
+    loopedReviewLinks.forEach(link => {
+      const buttonElement = document.createElement("a");
+      buttonElement.href = link.url;
+      buttonElement.classList.add("review-button", "inline-block");
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.classList.add("border", "border-white", "rounded-2xl", "py-2", "px-8", "hover:text-[#818589]", "hover:border-[#818589]", "w-72", "text-center");
+      button.innerText = link.title;
+
+      buttonElement.appendChild(button);
+      reviewButtonsContainer.appendChild(buttonElement);
+    });
+
+    // Show the first items by default
+    updateCarouselPosition();
+  }
+
+  // Function to update carousel position
+  function updateCarouselPosition() {
+    const reviewButtonsContainer = document.getElementById("review-buttons");
+
+    // Calculate the width of one button
+    const itemWidth = document.querySelector(".review-button").clientWidth;
+
+    // Move the container by the width of the current index
+    reviewButtonsContainer.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+  }
+
+  // Function to handle left chevron click
+  document.getElementById("left-chevron").addEventListener("click", () => {
+    const maxIndex = loopedReviewLinks.length - visibleItems;
     
+    // If at the beginning, jump to the end (for infinite loop)
+    if (currentIndex === 0) {
+      currentIndex = maxIndex - visibleItems;
+      updateCarouselPosition();
+    }
+
+    // Move to the left
+    currentIndex = Math.max(currentIndex - visibleItems, 0);
+    updateCarouselPosition();
+  });
+
+  // Function to handle right chevron click
+  document.getElementById("right-chevron").addEventListener("click", () => {
+    const maxIndex = loopedReviewLinks.length - visibleItems;
+    
+    // If at the end, jump to the beginning (for infinite loop)
+    if (currentIndex >= maxIndex) {
+      currentIndex = 0;
+      updateCarouselPosition();
+    }
+
+    // Move to the right
+    currentIndex = Math.min(currentIndex + visibleItems, maxIndex);
+    updateCarouselPosition();
+  });
+
+  // Call the function to generate buttons on page load
+  window.onload = generateReviewButtons;
+</script>
