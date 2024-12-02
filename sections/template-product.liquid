@@ -7,7 +7,6 @@
 {% assign selected_variant = product.selected_or_first_available_variant %}
 
 <style>
-
     #judgeme_product_reviews {
       padding-left: 10px;
       padding-right: 10px;
@@ -135,6 +134,23 @@
         </div>
     {% endif %}
 
+     {% comment %} Spicy Cupa Offer {% endcomment %}
+    {% if product.title == 'Spicy Cupa' %}
+        <div id="spicyCupa-popup" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center border border-gray-300">
+           <h3 class="text-xl font-bold mb-4">Boozy Blu sauce is in stock</h3>
+            <p class="mb-4">
+                <a href="https://ggsauthentic.com/products/boozy-blu" class="text-blue-500 underline hover:text-blue-700">
+                    Click here to buy it now
+                </a>
+            </p>
+            <button onclick="closeSpicyCupaPopup()" class="bg-red-500 text-white py-2 px-6 rounded-lg text-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                Close
+            </button>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="grid grid-cols-1 md:grid-cols-2 md:min-h-full bg-[#f6f7e9]">
         <div class="product--medias">
             <div class="bg-[#a7c248]/80 h-full flex flex-col justify-between">
@@ -252,20 +268,12 @@
                                         Add to cart
                                     {% endif %}
                                 </button>
-                                <button type="button" id="buy-now-button" class="w-1/2 md:w-1/4 px-4 md:px-5 py-3  bg-[#ff3232] text-white   font-medium  tracking-wide text-md md:text-xl hover:bg-opacity-70 rounded-2xl my-2"
-                                    {% if selected_variant.available == false %}
-                                        disabled
-                                    {% endif %}
-                                    
-                                >
-                                    {% if selected_variant.available == false %}
-                                        Sold out
-                                    {% else %}
-                                        Buy it now
-                                    {% endif %}
+                               {% if selected_variant.available %}
+                                <button type="button" id="buy-now-button" class="w-1/2 md:w-1/4 px-4 md:px-5 py-3  bg-[#ff3232] text-white font-medium tracking-wide text-md md:text-xl hover:bg-opacity-70 rounded-2xl my-2">
+                                    Buy it now
                                 </button>
-                            </div>
-                            
+                            {% endif %}
+                            </div>                          
                         {% when 'quantity' %}
                             <div class="bg-[#a7c248]/80 h-1 w-screen -ml-2">
                             </div>
@@ -340,8 +348,7 @@
                                 {% endif %}
                                 
                             </div>
-                                
-                      
+                        
                         {% else %}
                             
                     {% endcase %}
@@ -700,9 +707,31 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
-  // Function to close the Hat Gyal popup
+  // Function to close the Boozy Blu popup
   function closeBoozyBluPopup() {
     const popup = document.getElementById('boozyBlu-popup');
+    if (popup) {
+      popup.classList.add('hidden');
+    }
+  }
+</script>
+
+{% comment %} Spicy Cupa script {% endcomment %}
+ <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Check if the Boozy Blu popup should be displayed
+    const spicyCupaPopup = document.getElementById('spicyCupa-popup');
+    if (spicyCupaPopup) {
+      // Show the Boozy Blu popup after a short delay
+      setTimeout(function() {
+        spicyCupaPopup.classList.remove('hidden');
+      }, 1000); // Display after 1 second
+    }
+  });
+
+  // Function to close the Boozy Blu popup
+  function closeSpicyCupaPopup() {
+    const popup = document.getElementById('spicyCupa-popup');
     if (popup) {
       popup.classList.add('hidden');
     }
