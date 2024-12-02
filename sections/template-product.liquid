@@ -97,6 +97,7 @@
 </style>
 
 <div class=" mx-auto my-8 md:mt-8 sm:mb-0 overflow-x-hidden" x-data="{ showMoreInfo: false, showDelivery: false }">
+
     {% comment %} Marinade Offer  {% endcomment %}
     {% if product.tags contains 'marinade' %}
         <div id="marinade-popup" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
@@ -109,6 +110,7 @@
             </div>
         </div>
     {% endif %}
+
     {% comment %} Hat Gyal Offer {% endcomment %}
     {% if product.title == 'Hat Gyal' %}
         <div id="hatgyal-popup" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
@@ -121,6 +123,7 @@
             </div>
         </div>
     {% endif %}
+
     {% comment %} Boozy Blu Offer {% endcomment %}
     {% if product.title == 'Boozy Blu' %}
         <div id="boozyBlu-popup" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
@@ -138,10 +141,10 @@
     {% if product.title == 'Spicy Cupa' %}
         <div id="spicyCupa-popup" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
             <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center border border-gray-300">
-           <h3 class="text-xl font-bold mb-4">Boozy Blu sauce is in stock</h3>
+           <h3 class="text-xl font-bold mb-4">Boozy Blu sauce is in stock!</h3>
             <p class="mb-4">
                 <a href="https://ggsauthentic.com/products/boozy-blu" class="text-blue-500 underline hover:text-blue-700">
-                    Click here to buy it now
+                    Click here to buy it now!
                 </a>
             </p>
             <button onclick="closeSpicyCupaPopup()" class="bg-red-500 text-white py-2 px-6 rounded-lg text-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
@@ -719,17 +722,17 @@ document.addEventListener("DOMContentLoaded", function() {
 {% comment %} Spicy Cupa script {% endcomment %}
  <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Check if the Boozy Blu popup should be displayed
+    // Check if the Spicy Cupa popup should be displayed
     const spicyCupaPopup = document.getElementById('spicyCupa-popup');
     if (spicyCupaPopup) {
-      // Show the Boozy Blu popup after a short delay
+      // Show the Spicy Cupa popup after a short delay
       setTimeout(function() {
         spicyCupaPopup.classList.remove('hidden');
       }, 1000); // Display after 1 second
     }
   });
 
-  // Function to close the Boozy Blu popup
+  // Function to close the Spicy Cupa popup
   function closeSpicyCupaPopup() {
     const popup = document.getElementById('spicyCupa-popup');
     if (popup) {
