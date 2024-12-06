@@ -2,8 +2,7 @@
   "sections": {
     "template": {
       "type": "template-list-collections",
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [

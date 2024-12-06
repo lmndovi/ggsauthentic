@@ -5,28 +5,23 @@
       "blocks": {
         "title": {
           "type": "article_title",
-          "settings": {
-          }
+          "settings": {}
         },
         "author": {
           "type": "article_author",
-          "settings": {
-          }
+          "settings": {}
         },
         "published_date": {
           "type": "article_published_date",
-          "settings": {
-          }
+          "settings": {}
         },
         "thumbnail": {
           "type": "featured_image",
-          "settings": {
-          }
+          "settings": {}
         },
         "content": {
           "type": "article_content",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -36,8 +31,7 @@
         "author",
         "content"
       ],
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [

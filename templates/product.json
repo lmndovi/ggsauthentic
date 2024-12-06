@@ -5,38 +5,31 @@
       "blocks": {
         "vendor": {
           "type": "vendor",
-          "settings": {
-          }
+          "settings": {}
         },
         "title": {
           "type": "title",
-          "settings": {
-          }
+          "settings": {}
         },
         "price": {
           "type": "price",
-          "settings": {
-          }
+          "settings": {}
         },
         "variant_selector": {
           "type": "variant_selector",
-          "settings": {
-          }
+          "settings": {}
         },
         "quantity": {
           "type": "quantity",
-          "settings": {
-          }
+          "settings": {}
         },
         "checkout_buttons": {
           "type": "checkout_buttons",
-          "settings": {
-          }
+          "settings": {}
         },
         "description": {
           "type": "description",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -48,13 +41,11 @@
         "checkout_buttons",
         "description"
       ],
-      "settings": {
-      }
+      "settings": {}
     },
     "17240919406b968976": {
       "type": "apps",
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [

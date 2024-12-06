@@ -5,18 +5,15 @@
       "blocks": {
         "subtotal": {
           "type": "subtotal",
-          "settings": {
-          }
+          "settings": {}
         },
         "update-button": {
           "type": "update_button",
-          "settings": {
-          }
+          "settings": {}
         },
         "checkout-button": {
           "type": "checkout_button",
-          "settings": {
-          }
+          "settings": {}
         }
       },
       "block_order": [
@@ -24,8 +21,7 @@
         "update-button",
         "checkout-button"
       ],
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [

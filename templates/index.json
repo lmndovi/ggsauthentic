@@ -1,12 +1,3 @@
-/*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
 {
   "sections": {
     "banner": {
@@ -22,8 +13,6 @@
       "settings": {
         "title": "Mild or Xtra Hot?",
         "featured_collection": "featured-sauces",
-        "featured_collection_2": "pineapple-sauces",
-        "featured_collection_3": "cucumber-mango-1",
         "number_of_products_to_show": 3,
         "button_text": "View All"
       }
@@ -41,8 +30,7 @@
     },
     "reviews": {
       "type": "reviews",
-      "settings": {
-      }
+      "settings": {}
     },
     "discount-signup": {
       "type": "discount-signup",

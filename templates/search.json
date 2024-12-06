@@ -2,8 +2,7 @@
   "sections": {
     "template": {
       "type": "template-search",
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [

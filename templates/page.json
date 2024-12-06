@@ -2,8 +2,7 @@
   "sections": {
     "template": {
       "type": "template-page",
-      "settings": {
-      }
+      "settings": {}
     }
   },
   "order": [
