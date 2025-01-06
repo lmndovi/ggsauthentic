@@ -1,7 +1,32 @@
+ {% assign fusion_menu_linklist = linklists[section.settings.fusion-menu].links %}
+
+
 <div class="py-8">
+
+{% comment %} Fusion Nav {% endcomment %}
+
+<div class="pb-8 w-screen">
+    <div class="bg-[#0f2719] py-5 w-full flex justify-center items-center">
+        <h1 class="uppercase text-white text-2xl md:text-5xl  font-medium">
+            A fusion of flavours!
+        </h1>
+    </div>
+
+    
+
+    <div class="flex bg-[#ffb045] py-3">
+        <nav class="flex justify-center items-center mx-auto space-x-5 md:space-x-10 font-bold tracking-wide md:px-0 px-8">
+               {% for link in linklists.fusion-menu.links %}
+                    <div class="relative py-1">
+                        <a href="{{ link.url }}" class=" uppercase text-sm font-md text-gray-900 hover:text-gray-500 hover:underline hover:underline-offset-4">{{ link.title }}</a>
+                    </div>
+                {% endfor %}
+            </nav>
+    </div>
+
     {% paginate blog.articles by section.settings.number_of_blog_posts %}
     
-        <h1 class="text-center text-3xl">{{ blog.title }}</h1>
+        <h1 class="text-center text-3xl py-5">{{ blog.title }}</h1>
         
         <div class="max-w-6xl mx-auto">
             {% if blog.articles.size > 0 %}
