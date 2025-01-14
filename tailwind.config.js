@@ -25,5 +25,5 @@ module.exports = {
       200: "2",
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-motion")],
 };

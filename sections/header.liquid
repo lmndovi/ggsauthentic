@@ -21,19 +21,21 @@
 
     </div>
 
-  <div class="mx-auto px-4 sm:px-6">  
+  <div class="mx-auto px-6 sm:px-6">  
     <div  class="flex justify-between items-center px-5 py-6 md:justify-start md:space-x-10">
-        <div>
+    <!-- STEP 1: CREATE THE HAMBURGER MENU BUTTON -->
+        <div class="-mr-2 -my-2 ml-3 md:hidden">
+            <button x-on:click="mobileMenuOpen = true" type="button" class=" p-2 inline-flex items-center justify-center focus:outline-none">{% render 'icon-menu' %}
+            </button>
+        </div>   
+    
+    <div>
             <a href="https://ggsauthentic.com/products/marinade-mild">
                 <img src="{{ "great-taste.png" |  asset_url }}  " alt="Great Taste Award" class="h-8 w-8 md:h-14 md:w-14 lg:h-20 lg:w-20 ">
             </a>
             
         </div>
-      <!-- STEP 1: CREATE THE HAMBURGER MENU BUTTON -->
-        <div class="-mr-2 -my-2 ml-3 md:hidden">
-            <button x-on:click="mobileMenuOpen = true" type="button" class=" p-2 inline-flex items-center justify-center focus:outline-none">{% render 'icon-menu' %}
-            </button>
-        </div>
+
 
       <!-- NAVIGATION MENU -->
       <nav x-data class="hidden md:flex space-x-10">
@@ -86,12 +88,7 @@
         <button x-on:click="searchBarOpen = true" type="button" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
             {% render 'icon-search' %}
         </button>
-        <div class="relative">
-        <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
-            {% render 'icon-shopping-bag' %}
-            <span id="cart-badge" class="absolute top-0 right-0 -mt-3 mr-3 bg-gray-900 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center transition-opacity duration-200">0</span>
-        </a>
-    </div>
+        
 
           
      
@@ -107,7 +104,12 @@
                     {% endif %}
        {% endif %}
         
-      
+      <div class="relative">
+        <a href="{{ routes.cart_url }}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+            {% render 'icon-shopping-bag' %}
+            <span id="cart-badge" class="absolute top-0 right-0 -mt-3 mr-3 bg-gray-900 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center transition-opacity duration-200">0</span>
+        </a>
+    </div>
       </div>
     </div>
         <!-- STEP 3: USE THIS MOBILE MENU TEMPLATE -->
