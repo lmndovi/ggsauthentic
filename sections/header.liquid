@@ -11,14 +11,11 @@
             Let&#39;s spice it up
         </p>
         {% render 'icon-chilli' %}
-        </div>
-        
-    </div>    
-   
+        </div>     
+    </div>  
             <a href="/pages/contact-us" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
                 {% render  'icon-mail' %}
              </a>
-
     </div>
 
   <div class="mx-auto px-6 sm:px-6">  
@@ -29,11 +26,10 @@
             </button>
         </div>   
     
-    <div>
+    <div class="hidden md:flex">
             <a href="https://ggsauthentic.com/products/marinade-mild">
                 <img src="{{ "great-taste.png" |  asset_url }}  " alt="Great Taste Award" class="h-8 w-8 md:h-14 md:w-14 lg:h-20 lg:w-20 ">
             </a>
-            
         </div>
 
 
@@ -149,9 +145,6 @@
                                             {{ childlink.title}}</span>
                                         </a>
                                 {% endfor %}</div>
-                            
-
-                           
                          </div>
                          {% else %}
                                 <a href="{{ link.url }}" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
