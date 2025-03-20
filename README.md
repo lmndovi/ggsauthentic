@@ -1,40 +1,65 @@
-# :wave: Say hi to Elizabeth :wave:
+# GG's Authentic Website
 
-[![Generic badge](https://img.shields.io/badge/course%20available%3F-yes-green.svg)](https://shields.io/)
+Welcome to the GG's Authentic website repository! This project showcases a fully functional, responsive eCommerce platform built using modern web technologies.
 
-This project is created and intended to be used for the [Shopify Theme Development – Online Store 2.0 + TailwindCSS course](https://weeklyhow.com/courses/)
+## 🚀 Features
 
+- **8 Pages**: Home, About, Fusion, Product, Contact, Search, Cart, Password
+- **Responsive Design**: Optimized for desktops and mobile devices
+- **Dynamic Header and Footer**
+- **Interactive Product Display**: Hover state with add-to-cart functionality
+- **Review Integration**: JudgeMe plugin for user reviews and external review additions
+- **Email Marketing**: Shopify Email setup for subscriber management with welcome discounts
+- **Payment Processing**: Seamless checkout using Shopify API
+- **Social Media Integration**: Icons linking to TikTok, Facebook, Instagram, and X
 
-[Get the course!](https://weeklyhow.com/) | [Lessons covered](#lessons-covered) |
-[How to use](#how-to-use) | [Not a student?](#not-a-student)
+## 📦 Technologies Used
 
-## Lessons covered
+- **Frontend**: JavaScript, Liquid, TailwindCSS
+- **Backend**: Shopify API
+- **Plugins & Extensions**: JudgeMe, Shopify Email, Pagefly
 
-Status | Lectures
------------- | -------------
-:heavy_check_mark: | Installing Development Tools
-:heavy_check_mark: | Navigational Bar
-:heavy_check_mark: | 404 Page
-:heavy_check_mark: | Article Page
-:heavy_check_mark: | Blog Page
-:heavy_check_mark: | Cart Page
-:heavy_check_mark: | Product Collection Page
-:heavy_check_mark: | Collections Page
-:heavy_check_mark: | Homepage (Index)
-:heavy_check_mark: | Pages (About & Contact)
-:heavy_check_mark: | Advanced Product Page
-:heavy_check_mark: | Search Page
-:hourglass: | More lessons coming
+## 🛒 Key Features Breakdown
 
-## How to use
+- **Fusion Page**: Implemented hover states to display product details, price, and add-to-cart options.
+- **Product Display**: Image carousel, variant selectors, and quantity management using JavaScript.
+- **Search & Filter**: Product search functionality and sorting by price or alphabetical order.
+- **User Authentication**: Implemented login/logout using Auth.js.
+- **Cart Management**: Real-time updates with a cart badge showing the item count.
+- **Related Products**: Utilized Shopify's Related Products API for recommendations.
 
-To use this repository for making Shopify themes, use the following command of Shopify CLI.
-```sh
-shopify theme init [ NAME OF YOUR THEME ] --clone-url https://github.com/polidario/Elizabeth_Clean
+## 📈 Results
+
+- Increased revenue by **2000%** and store sessions by **142%**.
+- Boosted email marketing revenue, contributing to nearly **50% of total sales**.
+
+## 🛠️ Installation
+
+To run the project locally:
+
+```bash
+# Clone the repository
+git clone https://github.com/lmndovi/ggsauthentic.git
+
+# Navigate to the project directory
+cd ggsauthentic
+
+# Install dependencies
+yarn install
+
+# Start the development server
+yarn dev
 ```
 
-If you don't have Shopify CLI installed to your computer, navigate to the [installation page of Shopify CLI](https://shopify.dev/themes/tools/cli/installation).
+## 📧 Contact
 
-## Not a student
+For any questions or feedback, feel free to reach out!
 
-If you're not a student, you can still use this repository to start a new Shopify theme project. However, any issues that you will encounter throughout your development will not be supported as the instructor will only answer questions through the course's QnA page.
+- **Email**: [lmndovi@gmail.com](mailto\:lmndovi@gmail.com)
+- **Portfolio**: [My Portfolio](https://yourportfolio.com)
+- **LinkedIn**: [Lu Ndovi](https://linkedin.com/in/lmndovi)
+
+---
+
+Happy coding and thank you for checking out GG's Authentic!
+
