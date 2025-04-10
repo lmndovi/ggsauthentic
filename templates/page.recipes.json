@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "template": {
+      "type": "template-page",
+      "settings": {}
+    },
+    "recipe_form": {
+      "type": "recipe-form",
+      "settings": {}
+    },
+    "recipe_list": {
+      "type": "recipe-list",
+      "settings": {
+        "blog": "recipes",
+        "posts_per_page": 3,
+        "read_more_text": "Read full recipe"
+      }
+    }
+  },
+  "order": ["template", "recipe_form", "recipe_list"]
+}
