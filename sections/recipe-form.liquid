@@ -4,22 +4,22 @@
   <div class="max-w-3xl mx-auto py-10 px-6">
     <h2 class="text-3xl font-bold mb-6 text-center">Submit Your Recipe</h2>
 
-    {% form 'contact', id: 'recipe-form' %}
-      <input type="hidden" name="contact[tags]" value="recipe-submission" />
+    <form id="recipeForm" class="space-y-4">
+      <input type="hidden" name="customer_email" value="{{ customer.email }}">
 
-      <div class="mb-4">
+      <div>
         <label class="block font-semibold">Your Name</label>
-        <input type="text" name="contact[name]" class="w-full p-2 border rounded" value="{{ customer.first_name }} {{ customer.last_name }}">
+        <input type="text" name="name" value="{{ customer.first_name }} {{ customer.last_name }}" class="w-full p-2 border rounded" required>
       </div>
 
-      <div class="mb-4">
+      <div>
         <label class="block font-semibold">Recipe Title</label>
-        <input type="text" name="contact[recipe_title]" class="w-full p-2 border rounded" required>
+        <input type="text" name="recipe_title" class="w-full p-2 border rounded" required>
       </div>
 
-      <div class="mb-4">
+      <div>
         <label class="block font-semibold">Product Used</label>
-        <select name="contact[product_handle]" class="w-full p-2 border rounded" required>
+        <select name="product_handle" class="w-full p-2 border rounded" required>
           <option value="">-- Select a Product --</option>
           {% for product in all_products %}
             <option value="{{ product.handle }}">{{ product.title }}</option>
@@ -27,15 +27,48 @@
         </select>
       </div>
 
-      <div class="mb-4">
+      <div>
         <label class="block font-semibold">Recipe Instructions</label>
-        <textarea name="contact[recipe]" class="w-full p-2 border rounded h-32" required></textarea>
+        <textarea name="recipe" class="w-full p-2 border rounded h-32" required></textarea>
       </div>
 
       <button type="submit" class="bg-[#ffb045] hover:bg-[#e59b30] px-6 py-2 text-white font-semibold rounded">
         Submit Recipe
       </button>
-    {% endform %}
+    </form>
+
+    <div id="form-message" class="mt-4 text-center text-sm text-green-600"></div>
+
+    <script>
+      document.getElementById('recipeForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const data = Object.fromEntries(new FormData(form).entries());
+
+        const response = await fetch('https://shopify-recipes-k6ig8ipws-lmndovis-projects.vercel.app/api/submit-recipe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const messageEl = document.getElementById('form-message');
+
+        if (response.ok) {
+          form.reset();
+          messageEl.textContent = "✅ Recipe submitted successfully!";
+          messageEl.classList.remove('text-red-600');
+          messageEl.classList.add('text-green-600');
+        } else {
+          const err = await response.json();
+          messageEl.textContent = "❌ Error: " + (err.error || "Something went wrong.");
+          messageEl.classList.remove('text-green-600');
+          messageEl.classList.add('text-red-600');
+        }
+      });
+    </script>
   </div>
 {% else %}
   <div class="text-center py-10">
