@@ -1,49 +1,45 @@
 <div class="w-full py-2 px-2 sm:py-3 sm:px-3">
-    <div class=" bg-transparent  rounded-lg overflow-hidden group">
+    <div class="group">
+        <!-- Product Card - sized to image -->
+        <div class="border border-gray-200 rounded-lg overflow-hidden group shadow-sm hover:shadow-md transition-shadow duration-300">
             <a href="{{ product.url }}">
-            {% if product.media.size > 1 %}
-  
-                <div class="h-40 sm:h-60 md:h-80 overflow-hidden relative">
-                    <img class="w-full h-full object-cover transition duration-1000 ease-in-out group-hover:opacity-0 absolute inset-0" src="{{ product.media.first | img_url: 'medium' }}" alt="{{ product.media.first.preview_image.alt }}">
-                    <img class="w-full h-full object-cover transition duration-1000 ease-in-out opacity-0 group-hover:opacity-100 hover:scale-105 absolute inset-0" src="{{ product.media[1] | img_url: 'medium' }}" alt="{{ product.media[1].preview_image.alt }}">
-                </div>
-
-            {% elsif product.featured_image %}
-                <div class="h-40 sm:h-60 md:h-80 overflow-hidden relative">
-                    <img class="w-full h-full object-cover transition duration-1000 ease-in-out hover:scale-105 transform" src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.featured_image.alt }}">
-                </div>
-            {% else %}
-                {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover bg-gray-100' }}
-            {% endif %}
-            </a>   
-    <div class="flex flex-col p-4" id="product-card-info">
-
-        <a class="text-gray-700 uppercase font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis" href="{{ product.url }}">
-                                {{ product.title  |  truncatewords: 4}}
-                            </a>
-<div class="opacity-100 md:opacity-0 md:transform md:translate-y-4 transition duration-500 md:group-hover:translate-y-0 md:group-hover:opacity-100">             <p class="text-gray-500 font-bold text-center">
-                {{ product.price |  money }}
+                {% if product.media.size > 1 %}
+                    <div class="h-40 sm:h-60 md:h-80 overflow-hidden relative">
+                        <img class="w-full h-full object-cover transition duration-1000 ease-in-out group-hover:opacity-0 absolute inset-0" src="{{ product.media.first | img_url: 'medium' }}" alt="{{ product.media.first.preview_image.alt }}">
+                        <img class="w-full h-full object-cover transition duration-1000 ease-in-out opacity-0 group-hover:opacity-100 hover:scale-105 absolute inset-0" src="{{ product.media[1] | img_url: 'medium' }}" alt="{{ product.media[1].preview_image.alt }}">
+                    </div>
+                {% elsif product.featured_image %}
+                    <div class="h-40 sm:h-60 md:h-80 overflow-hidden relative">
+                        <img class="w-full h-full object-cover transition duration-1000 ease-in-out hover:scale-105 transform" src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.featured_image.alt }}">
+                    </div>
+                {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover bg-gray-100' }}
+                {% endif %}
+            </a>
+        </div>
+        
+        <!-- Product Info - always visible outside the card -->
+        <div class="flex flex-col p-4" id="product-card-info">
+            <a class="text-gray-700 uppercase font-medium text-center whitespace-nowrap overflow-hidden text-ellipsis" href="{{ product.url }}">
+                {{ product.title | truncatewords: 4 }}
+            </a>
+            
+            <p class="text-gray-500 font-bold text-center mt-2">
+                {{ product.price | money }}
             </p>
 
-             <form action="/cart/add" method="post" class="add-to-cart-form">
-                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <form action="/cart/add" method="post" class="add-to-cart-form">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                 
-                <div class="relative mt-4">
-                    <div class="h-12 w-full bg-black rounded-lg ">
-                        <button type="submit" class="relative uppercase text-md bg-[#ffb045] text-black border-[0.5px] border-black rounded-lg font-bold py-2 px-1 w-full add-to-cart"
-                        >
+                <div class="flex justify-center mt-4">
+                    <div class="h-10 w-1/2 bg-black rounded-lg transition-transform duration-300 hover:scale-105">
+                        <button type="submit" class="relative uppercase text-sm bg-[#ffb045] text-black border-[0.5px] border-black rounded-lg font-bold py-2 px-1 w-full add-to-cart hover:bg-[#ff9f2a] transition-colors duration-300">
                             Add to cart
                         </button>
                     </div>
                 </div>
-             </form>
-               
-            {% comment %} {% endform %} {% endcomment %}
-            
+            </form>
         </div>
-       
-    </div>
-
     </div>
 </div>
 
