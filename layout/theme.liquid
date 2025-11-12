@@ -32,7 +32,7 @@
       {{ content_for_layout }}
     </main>
     {% section 'footer' %}
-    {% comment %}
+    
       Modal for SignUp (commented out 2025-11-12)
       {% if customer == null %}
       <!-- Signup Modal -->
@@ -57,8 +57,8 @@
         }
       </script>
       {% endif %}
-    {% endcomment %}
-    {% comment %} Flash Sale Modal for UK visitors {% endcomment %}
+   
+    {% comment %} Flash Sale Modal for UK visitors
     <div id="flashsale-modal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-60 z-50 hidden">
       <div class="relative bg-white px-8 py-10 rounded-2xl shadow-2xl max-w-lg w-full text-center border border-gray-200">
         <button type="button" id="flashsale-close" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 focus:outline-none" aria-label="Close Flash Sale message">
@@ -150,6 +150,7 @@
         });
       })();
     </script>
+     {% endcomment %}
   </body>
 
 </html>
