@@ -32,33 +32,124 @@
       {{ content_for_layout }}
     </main>
     {% section 'footer' %}
-    {% comment %} Modal for SignUp {% endcomment %}
-    {% if customer == null %}
-    <!-- Signup Modal -->
-    <div id="signup-popup" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
-  
-  <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center border border-gray-300">
-    <h3 class="text-2xl font-bold mb-4">Sign up <a href="/account/register" class="text-blue-600 hover:underline">here</a> and get 20% off your order!</h3>
-    <p class="mb-6">Join our mailing list to receive your exclusive discount code.</p>
-    <button onclick="closePopup()" class="bg-red-500 text-white py-2 px-6 rounded-lg text-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
-      Close
-    </button>
-  </div>
-</div>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        if (!localStorage.getItem('signupPopupShown')) {
-          document.getElementById('signup-popup').style.display = 'block';
-          localStorage.setItem('signupPopupShown', 'true');
+    {% comment %}
+      Modal for SignUp (commented out 2025-11-12)
+      {% if customer == null %}
+      <!-- Signup Modal -->
+      <div id="signup-popup" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center border border-gray-300">
+          <h3 class="text-2xl font-bold mb-4">Sign up <a href="/account/register" class="text-blue-600 hover:underline">here</a> and get 20% off your order!</h3>
+          <p class="mb-6">Join our mailing list to receive your exclusive discount code.</p>
+          <button onclick="closePopup()" class="bg-red-500 text-white py-2 px-6 rounded-lg text-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+            Close
+          </button>
+        </div>
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          if (!localStorage.getItem('signupPopupShown')) {
+            document.getElementById('signup-popup').style.display = 'block';
+            localStorage.setItem('signupPopupShown', 'true');
+          }
+        });
+        function closePopup() {
+          document.getElementById('signup-popup').style.display = 'none';
         }
-      });
+      </script>
+      {% endif %}
+    {% endcomment %}
+    {% comment %} Flash Sale Modal for UK visitors {% endcomment %}
+    <div id="flashsale-modal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-60 z-50 hidden">
+      <div class="relative bg-white px-8 py-10 rounded-2xl shadow-2xl max-w-lg w-full text-center border border-gray-200">
+        <button type="button" id="flashsale-close" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 focus:outline-none" aria-label="Close Flash Sale message">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <p class="text-sm uppercase tracking-[0.3em] text-gray-500 mb-4">Flash Sale</p>
+        <h3 class="text-3xl font-bold text-gray-900 mb-4">Weekend Bonanza</h3>
+        <h3 class="text-3xl font-bold text-gray-900 mb-4">20% Off at Checkout</h3>
+        <p class="text-lg text-gray-700">UK Mainland Only. Ends 17th Nov</p>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const modalId = 'flashsale-modal';
+        const storageKey = 'flashSaleModalDismissed';
 
-      function closePopup() {
-        document.getElementById('signup-popup').style.display = 'none';
-      }
+        let storageAvailable = null;
+
+        function canUseStorage() {
+          if (storageAvailable !== null) return storageAvailable;
+          try {
+            const testKey = '__flashSaleTest__';
+            localStorage.setItem(testKey, testKey);
+            localStorage.removeItem(testKey);
+            storageAvailable = true;
+            return storageAvailable;
+          } catch (error) {
+            storageAvailable = false;
+            return storageAvailable;
+          }
+        }
+
+        function hasDismissed() {
+          if (!canUseStorage()) return false;
+          return localStorage.getItem(storageKey) === 'true';
+        }
+
+        function setDismissed() {
+          if (!canUseStorage()) return;
+          localStorage.setItem(storageKey, 'true');
+        }
+
+        function showModal() {
+          const modal = document.getElementById(modalId);
+          if (!modal) return;
+          modal.classList.remove('hidden');
+        }
+
+        function hideModal() {
+          const modal = document.getElementById(modalId);
+          if (!modal) return;
+          modal.classList.add('hidden');
+          setDismissed();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          const closeButton = document.getElementById('flashsale-close');
+          const modal = document.getElementById(modalId);
+          if (closeButton) {
+            closeButton.addEventListener('click', hideModal);
+          }
+          if (modal) {
+            modal.addEventListener('click', function (event) {
+              if (event.target === modal) {
+                hideModal();
+              }
+            });
+          }
+
+          if (hasDismissed()) {
+            return;
+          }
+
+          fetch('https://ipapi.co/json/')
+            .then(function (response) {
+              if (!response.ok) {
+                throw new Error('GeoIP lookup failed');
+              }
+              return response.json();
+            })
+            .then(function (data) {
+              if (data && (data.country_name === 'United Kingdom' || data.country === 'GB')) {
+                showModal();
+              }
+            })
+            .catch(function (error) {
+              console.warn('Flash Sale modal GeoIP check failed', error);
+            });
+        });
+      })();
     </script>
-  {% endif %}
   </body>
 
 </html>
