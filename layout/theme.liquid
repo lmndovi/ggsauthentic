@@ -153,6 +153,98 @@
       })();
     </script>
 
+    <script>
+      (function () {
+        if (window.__ggsCartSubmitHandlerInitialized) {
+          console.debug('[GGS Cart] Global submit handler already initialised.');
+          return;
+        }
+        window.__ggsCartSubmitHandlerInitialized = true;
+        console.debug('[GGS Cart] Initialising global submit handler.');
+
+        document.addEventListener('submit', function (event) {
+          const form = event.target.closest('form[action="/cart/add"]');
+          if (!form) {
+            return;
+          }
+
+          event.preventDefault();
+          try {
+            if (typeof event.stopImmediatePropagation === 'function') {
+              event.stopImmediatePropagation();
+            }
+            if (typeof event.stopPropagation === 'function') {
+              event.stopPropagation();
+            }
+          } catch (propagationError) {
+            console.debug('[GGS Cart] Unable to stop propagation', propagationError);
+          }
+
+          if (form.dataset.ggsProcessing === 'true') {
+            console.debug('[GGS Cart] Skipping because form is already processing.');
+            return;
+          }
+          form.dataset.ggsProcessing = 'true';
+
+          console.debug('[GGS Cart] Intercepted submit from form:', form, {
+            isTrusted: event.isTrusted,
+          });
+
+          // console.trace('[GGS Cart] Trace for intercepted submit');
+
+          const formData = new FormData(form);
+          const variantId = formData.get('id');
+          const quantity = formData.get('quantity') || 1;
+          console.debug('[GGS Cart] Preparing add-to-cart fetch', {
+            variantId: variantId,
+            quantity: quantity,
+          });
+
+          const submitButton = form.querySelector('button[type="submit"]');
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.innerText = 'Adding...';
+          }
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              id: variantId,
+              quantity: quantity,
+            }),
+          })
+            .then(function (response) {
+              console.debug('[GGS Cart] Fetch response status:', response.status);
+              return response.json();
+            })
+            .then(function (data) {
+              console.debug('[GGS Cart] Item added to cart:', data);
+              try {
+                document.dispatchEvent(
+                  new CustomEvent('ggs:cart-item-added', { detail: data })
+                );
+              } catch (dispatchError) {
+                console.debug('[GGS Cart] Unable to dispatch cart event', dispatchError);
+              }
+            })
+            .catch(function (error) {
+              console.error('[GGS Cart] Error adding item to cart:', error);
+            })
+            .finally(function () {
+              delete form.dataset.ggsProcessing;
+              if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerText = 'Add to cart';
+              }
+            });
+        });
+      })();
+    </script>
+
   </body>
 
 </html>
