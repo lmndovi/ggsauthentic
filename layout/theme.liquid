@@ -105,35 +105,64 @@
           const modal = document.getElementById(modalId);
           if (!modal) return;
           modal.classList.remove('hidden');
+          modal.classList.add('sm:flex');
+          modal.style.display = '';
         }
 
         function hideModal(event) {
+          console.log('[Signup Modal] hideModal called', { event, modalId });
           if (event) {
             event.preventDefault();
             event.stopPropagation();
           }
           const modal = document.getElementById(modalId);
-          if (!modal) return;
+          console.log('[Signup Modal] Modal element found:', modal);
+          if (!modal) {
+            console.warn('[Signup Modal] Modal element not found!');
+            return;
+          }
+          console.log('[Signup Modal] Hiding modal, setting display to none');
           modal.classList.add('hidden');
+          modal.classList.remove('sm:flex');
+          modal.style.display = 'none';
           setDismissed();
+          console.log('[Signup Modal] Modal hidden and dismissed state saved');
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+          console.log('[Signup Modal] DOMContentLoaded fired');
           const modal = document.getElementById(modalId);
           const closeButton = document.getElementById('signup-modal-close');
           const remindButton = document.getElementById('signup-modal-remind');
 
+          console.log('[Signup Modal] Elements found:', {
+            modal: !!modal,
+            closeButton: !!closeButton,
+            remindButton: !!remindButton
+          });
+
           // Always set up event listeners regardless of dismissal state
           if (closeButton) {
-            closeButton.addEventListener('click', hideModal);
+            console.log('[Signup Modal] Attaching click listener to close button');
+            closeButton.addEventListener('click', function(event) {
+              console.log('[Signup Modal] Close button clicked!', event);
+              hideModal(event);
+            });
+          } else {
+            console.error('[Signup Modal] Close button not found!');
           }
 
           if (remindButton) {
-            remindButton.addEventListener('click', hideModal);
+            console.log('[Signup Modal] Attaching click listener to remind button');
+            remindButton.addEventListener('click', function(event) {
+              console.log('[Signup Modal] Remind button clicked!', event);
+              hideModal(event);
+            });
           }
 
           if (modal) {
             modal.addEventListener('click', function (event) {
+              console.log('[Signup Modal] Modal clicked', { target: event.target, modal: event.currentTarget, isModal: event.target === modal });
               if (event.target === modal) {
                 hideModal(event);
               }
@@ -142,7 +171,10 @@
 
           // Only show modal if it hasn't been dismissed
           if (!hasDismissed()) {
+            console.log('[Signup Modal] Modal not dismissed, will show after delay');
             setTimeout(showModal, delayMs);
+          } else {
+            console.log('[Signup Modal] Modal already dismissed, not showing');
           }
         });
       })();
