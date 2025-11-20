@@ -107,7 +107,11 @@
           modal.classList.remove('hidden');
         }
 
-        function hideModal() {
+        function hideModal(event) {
+          if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
           const modal = document.getElementById(modalId);
           if (!modal) return;
           modal.classList.add('hidden');
@@ -115,14 +119,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-          if (hasDismissed()) {
-            return;
-          }
-
           const modal = document.getElementById(modalId);
           const closeButton = document.getElementById('signup-modal-close');
           const remindButton = document.getElementById('signup-modal-remind');
 
+          // Always set up event listeners regardless of dismissal state
           if (closeButton) {
             closeButton.addEventListener('click', hideModal);
           }
@@ -134,12 +135,15 @@
           if (modal) {
             modal.addEventListener('click', function (event) {
               if (event.target === modal) {
-                hideModal();
+                hideModal(event);
               }
             });
           }
 
-          setTimeout(showModal, delayMs);
+          // Only show modal if it hasn't been dismissed
+          if (!hasDismissed()) {
+            setTimeout(showModal, delayMs);
+          }
         });
       })();
     </script>
