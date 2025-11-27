@@ -35,7 +35,7 @@
 
             <!-- Carousel Wrapper -->
             <div id="review-button-wrapper" class="w-full overflow-hidden max-w-[80%] mx-auto">
-                <div id="review-buttons" class="flex transition-transform duration-300 ease-in-out space-x-5">
+                <div id="review-buttons" class="flex transition-transform duration-300 ease-in-out space-x-5" style="scroll-snap-type: x mandatory;">
                     <!-- Buttons will be dynamically generated here -->
                 </div>
             </div>
@@ -73,15 +73,17 @@
   // Function to generate buttons dynamically
   function generateReviewButtons() {
     const reviewButtonsContainer = document.getElementById("review-buttons");
+    const wrapper = document.getElementById("review-button-wrapper");
 
     // Clear existing buttons (if any)
     reviewButtonsContainer.innerHTML = "";
 
     // Create button elements
-    loopedReviewLinks.forEach(link => {
+    loopedReviewLinks.forEach((link, index) => {
       const buttonElement = document.createElement("a");
       buttonElement.href = link.url;
-      buttonElement.classList.add("review-button", "inline-block");
+      buttonElement.classList.add("review-button", "inline-block", "flex-shrink-0");
+      buttonElement.style.scrollSnapAlign = "start";
 
       const button = document.createElement("button");
       button.type = "button";
@@ -92,33 +94,53 @@
       reviewButtonsContainer.appendChild(buttonElement);
     });
 
-    // Show the first items by default
-    updateCarouselPosition();
+    // Calculate wrapper width to show exactly 3 buttons
+    // Wait for DOM to render
+    setTimeout(() => {
+      const firstButton = document.querySelector(".review-button");
+      if (firstButton) {
+        const buttonWidth = firstButton.offsetWidth;
+        const spacing = 20; // space-x-5 = 1.25rem = 20px
+        // Calculate wrapper width: 3 buttons + 2 spaces between them
+        const wrapperWidth = (buttonWidth * visibleItems) + (spacing * (visibleItems - 1));
+        wrapper.style.width = `${wrapperWidth}px`;
+        wrapper.style.maxWidth = `${wrapperWidth}px`;
+      }
+      // Show the first items by default
+      updateCarouselPosition();
+    }, 100);
   }
 
   // Function to update carousel position
   function updateCarouselPosition() {
     const reviewButtonsContainer = document.getElementById("review-buttons");
+    const firstButton = document.querySelector(".review-button");
+    
+    if (!firstButton) return;
 
-    // Calculate the width of one button
-    const itemWidth = document.querySelector(".review-button").clientWidth;
+    // Calculate the width of one button including spacing
+    const buttonWidth = firstButton.offsetWidth;
+    const spacing = 20; // space-x-5 = 1.25rem = 20px
+    const itemWidthWithSpacing = buttonWidth + spacing;
 
-    // Move the container by the width of the current index
-    reviewButtonsContainer.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    // Move the container by the width of visibleItems at a time
+    // This ensures exactly 3 buttons are shown
+    const translateX = currentIndex * itemWidthWithSpacing;
+    reviewButtonsContainer.style.transform = `translateX(-${translateX}px)`;
   }
 
   // Function to handle left chevron click
   document.getElementById("left-chevron").addEventListener("click", () => {
     const maxIndex = loopedReviewLinks.length - visibleItems;
     
+    // Move to the left by visibleItems
+    currentIndex = currentIndex - visibleItems;
+    
     // If at the beginning, jump to the end (for infinite loop)
-    if (currentIndex === 0) {
-      currentIndex = maxIndex - visibleItems;
-      updateCarouselPosition();
+    if (currentIndex < 0) {
+      currentIndex = maxIndex;
     }
-
-    // Move to the left
-    currentIndex = Math.max(currentIndex - visibleItems, 0);
+    
     updateCarouselPosition();
   });
 
@@ -126,14 +148,14 @@
   document.getElementById("right-chevron").addEventListener("click", () => {
     const maxIndex = loopedReviewLinks.length - visibleItems;
     
+    // Move to the right by visibleItems
+    currentIndex = currentIndex + visibleItems;
+    
     // If at the end, jump to the beginning (for infinite loop)
-    if (currentIndex >= maxIndex) {
+    if (currentIndex > maxIndex) {
       currentIndex = 0;
-      updateCarouselPosition();
     }
-
-    // Move to the right
-    currentIndex = Math.min(currentIndex + visibleItems, maxIndex);
+    
     updateCarouselPosition();
   });
 

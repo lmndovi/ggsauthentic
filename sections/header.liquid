@@ -198,8 +198,16 @@
             selectedIndex: -1,
             showSuggestions: false,
             loading: false,
-            searchTimeout: null
-        }" @submit.prevent="window.location.href = '{{ routes.search_url }}?q=' + encodeURIComponent(query)">
+            searchTimeout: null,
+            isMobile: window.innerWidth < 640,
+            get placeholder() { return this.isMobile ? 'Search for products...' : 'Search for products, collections...'; }
+        }" 
+        x-init="
+            const updateMobile = () => { isMobile = window.innerWidth < 640; };
+            window.addEventListener('resize', updateMobile);
+            updateMobile();
+        "
+        @submit.prevent="window.location.href = '{{ routes.search_url }}?q=' + encodeURIComponent(query)">
             <div class="relative flex items-center">
                 <div class="absolute left-4 text-gray-400 pointer-events-none z-10">
                     {% render 'icon-search' %}
@@ -207,7 +215,7 @@
                 <input type="search" 
                        name="q" 
                        x-model="query"
-                       placeholder="Search for products, collections..." 
+                       :placeholder="placeholder"
                        autocomplete="off"
                        class="w-full pl-12 pr-14 py-4 bg-gray-50 border-2 border-gray-200 rounded-xl text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#bd2d2d] focus:border-[#bd2d2d] transition-all duration-200 hover:border-gray-300"
                        @input="
