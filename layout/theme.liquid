@@ -33,12 +33,12 @@
     </main>
     {% section 'footer' %}
     
-    {% if customer == null %}
-    <div id="signup-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/70 px-4 sm:flex" role="dialog" aria-modal="true" aria-labelledby="signup-modal-title" aria-describedby="signup-modal-copy">
+      {% if customer == null %}
+    <div id="signup-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/70 px-4" role="dialog" aria-modal="true" aria-labelledby="signup-modal-title" aria-describedby="signup-modal-copy" style="display: none !important;">
       <div class="relative w-full max-w-lg rounded-2xl border border-gray-200 bg-white px-8 py-10 text-center shadow-2xl">
         <button type="button" id="signup-modal-close" class="absolute right-4 top-4 text-gray-400 transition hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" aria-label="Close signup offer">
           <span aria-hidden="true">&times;</span>
-        </button>
+          </button>
         <p class="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-gray-500">Welcome Offer</p>
         <h3 id="signup-modal-title" class="mb-2 text-3xl font-bold text-gray-900">Join the GGS Family</h3>
         <p class="mb-6 text-lg text-gray-600" id="signup-modal-copy">Create a free account today and unlock 20% off your first order plus early access to new products.</p>
@@ -47,15 +47,15 @@
           <input type="hidden" name="contact[accepts_marketing]" value="true">
           {% if form.posted_successfully? %}
             <p class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">Thanks! Please check your inbox to complete your signup.</p>
-            <script>
-              document.addEventListener('DOMContentLoaded', function () {
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
                 try {
                   localStorage.setItem('signupModalDismissed', 'true');
                 } catch (error) {
                   console.debug('Signup modal storage unavailable', error);
-                }
+        }
               });
-            </script>
+      </script>
           {% else %}
             <div class="flex flex-col gap-3 sm:flex-row">
               <input type="email" name="contact[email]" id="signup-modal-email" placeholder="Enter your email" required class="w-full rounded-xl border border-gray-300 px-5 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-200" aria-label="Email address">
@@ -64,7 +64,7 @@
             {% if form.errors %}
               <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-600">{{ form.errors | default_errors }}</div>
             {% endif %}
-          {% endif %}
+      {% endif %}
         {% endform %}
         <button type="button" id="signup-modal-remind" class="text-sm font-medium text-gray-500 underline underline-offset-4 transition hover:text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300">Maybe later</button>
       </div>
@@ -104,79 +104,98 @@
         function showModal() {
           const modal = document.getElementById(modalId);
           if (!modal) return;
-          modal.classList.remove('hidden');
-          modal.classList.add('sm:flex');
+          // Check again before showing (in case dismissed during delay)
+          if (hasDismissed()) {
+            return;
+          }
           modal.style.display = '';
+          modal.classList.remove('hidden');
+          // Use flex for desktop, block for mobile
+          if (window.innerWidth >= 640) {
+            modal.style.display = 'flex';
+          } else {
+            modal.style.display = 'block';
+          }
         }
 
         function hideModal(event) {
-          console.log('[Signup Modal] hideModal called', { event, modalId });
           if (event) {
             event.preventDefault();
             event.stopPropagation();
           }
           const modal = document.getElementById(modalId);
-          console.log('[Signup Modal] Modal element found:', modal);
-          if (!modal) {
-            console.warn('[Signup Modal] Modal element not found!');
-            return;
-          }
-          console.log('[Signup Modal] Hiding modal, setting display to none');
+          if (!modal) return;
           modal.classList.add('hidden');
-          modal.classList.remove('sm:flex');
           modal.style.display = 'none';
           setDismissed();
-          console.log('[Signup Modal] Modal hidden and dismissed state saved');
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
-          console.log('[Signup Modal] DOMContentLoaded fired');
+        // Check dismissal state immediately and hide modal if already dismissed
+        function initModal() {
+          const modal = document.getElementById(modalId);
+          if (modal && hasDismissed()) {
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+            return;
+          }
+        }
+
+        // Run immediately if DOM is ready, otherwise wait
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function () {
+            initModal();
+            const modal = document.getElementById(modalId);
+            const closeButton = document.getElementById('signup-modal-close');
+            const remindButton = document.getElementById('signup-modal-remind');
+
+            // Always set up event listeners
+            if (closeButton) {
+              closeButton.addEventListener('click', hideModal);
+            }
+
+            if (remindButton) {
+              remindButton.addEventListener('click', hideModal);
+            }
+
+            if (modal) {
+              modal.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                  hideModal(event);
+                }
+              });
+            }
+
+            // Only show modal if it hasn't been dismissed
+            if (!hasDismissed()) {
+              setTimeout(showModal, delayMs);
+            }
+          });
+        } else {
+          initModal();
           const modal = document.getElementById(modalId);
           const closeButton = document.getElementById('signup-modal-close');
           const remindButton = document.getElementById('signup-modal-remind');
 
-          console.log('[Signup Modal] Elements found:', {
-            modal: !!modal,
-            closeButton: !!closeButton,
-            remindButton: !!remindButton
-          });
-
-          // Always set up event listeners regardless of dismissal state
           if (closeButton) {
-            console.log('[Signup Modal] Attaching click listener to close button');
-            closeButton.addEventListener('click', function(event) {
-              console.log('[Signup Modal] Close button clicked!', event);
-              hideModal(event);
-            });
-          } else {
-            console.error('[Signup Modal] Close button not found!');
+            closeButton.addEventListener('click', hideModal);
           }
 
           if (remindButton) {
-            console.log('[Signup Modal] Attaching click listener to remind button');
-            remindButton.addEventListener('click', function(event) {
-              console.log('[Signup Modal] Remind button clicked!', event);
-              hideModal(event);
-            });
+            remindButton.addEventListener('click', hideModal);
           }
 
           if (modal) {
             modal.addEventListener('click', function (event) {
-              console.log('[Signup Modal] Modal clicked', { target: event.target, modal: event.currentTarget, isModal: event.target === modal });
               if (event.target === modal) {
                 hideModal(event);
               }
             });
           }
 
-          // Only show modal if it hasn't been dismissed
           if (!hasDismissed()) {
-            console.log('[Signup Modal] Modal not dismissed, will show after delay');
             setTimeout(showModal, delayMs);
-          } else {
-            console.log('[Signup Modal] Modal already dismissed, not showing');
           }
-        });
+        }
       })();
     </script>
     {% endif %}
@@ -270,6 +289,234 @@
               }
             });
         });
+      })();
+    </script>
+
+    {% comment %} Restore page if accidentally hidden {% endcomment %}
+    <script>
+      (function() {
+        // Check if main content is hidden and restore it
+        const main = document.querySelector('main');
+        const body = document.body;
+        let needsRestore = false;
+        
+        if (main) {
+          const mainStyle = window.getComputedStyle(main);
+          if (mainStyle.display === 'none' || mainStyle.visibility === 'hidden') {
+            main.style.display = '';
+            main.style.visibility = '';
+            main.style.opacity = '';
+            main.style.height = '';
+            main.style.overflow = '';
+            main.classList.remove('hidden');
+            needsRestore = true;
+          }
+        }
+        if (body) {
+          const bodyStyle = window.getComputedStyle(body);
+          if (bodyStyle.display === 'none' || bodyStyle.visibility === 'hidden') {
+            body.style.display = '';
+            body.style.visibility = '';
+            body.style.opacity = '';
+            body.classList.remove('hidden');
+            needsRestore = true;
+          }
+        }
+        
+        // If we had to restore content, clear the cookie banner dismissal
+        // so it can show again (but won't hide the page)
+        if (needsRestore) {
+          try {
+            localStorage.removeItem('cookiePrivacyBannerDismissed');
+            console.log('[Page Restore] Cleared cookie banner dismissal state');
+          } catch (e) {
+            // Storage unavailable
+          }
+        }
+      })();
+    </script>
+
+    {% comment %} Cookie/Privacy Banner Dismissal Handler {% endcomment %}
+    <script>
+      (function () {
+        const cookieBannerStorageKey = 'cookiePrivacyBannerDismissed';
+        
+        function canUseStorage() {
+          try {
+            const testKey = '__cookieBannerTest__';
+            localStorage.setItem(testKey, testKey);
+            localStorage.removeItem(testKey);
+            return true;
+          } catch (error) {
+            return false;
+          }
+        }
+
+        function hasDismissed() {
+          if (!canUseStorage()) return false;
+          return localStorage.getItem(cookieBannerStorageKey) === 'true';
+        }
+
+        function setDismissed() {
+          if (!canUseStorage()) return;
+          localStorage.setItem(cookieBannerStorageKey, 'true');
+        }
+
+        function isModalOverlay(element) {
+          if (!element) return false;
+          
+          // Exclude main content areas
+          const tagName = element.tagName.toLowerCase();
+          if (['body', 'html', 'main', 'header', 'footer', 'nav'].includes(tagName)) {
+            return false;
+          }
+          
+          // Must be a dialog/alertdialog or have modal-like positioning
+          const hasDialogRole = element.getAttribute('role') === 'dialog' || 
+                               element.getAttribute('role') === 'alertdialog';
+          
+          const style = window.getComputedStyle(element);
+          const isFixed = style.position === 'fixed';
+          const isAbsolute = style.position === 'absolute';
+          const zIndex = parseInt(style.zIndex) || 0;
+          
+          // Must be positioned as overlay (fixed/absolute) with high z-index, OR have dialog role
+          return hasDialogRole || (isFixed && zIndex >= 50) || (isAbsolute && zIndex >= 50);
+        }
+
+        function hideBanner(banner) {
+          if (!banner) return;
+          // Only hide if it's actually a modal overlay
+          if (!isModalOverlay(banner)) return;
+          
+          banner.style.display = 'none';
+          banner.style.visibility = 'hidden';
+          banner.style.opacity = '0';
+          banner.classList.add('hidden');
+          banner.setAttribute('aria-hidden', 'true');
+          setDismissed();
+        }
+
+        function findAndHandleBanner() {
+          if (!hasDismissed()) return;
+
+          // Only target actual modal/dialog elements
+          const modalSelectors = [
+            '[role="dialog"]',
+            '[role="alertdialog"]'
+          ];
+
+          for (const selector of modalSelectors) {
+            try {
+              const elements = document.querySelectorAll(selector);
+              for (const el of elements) {
+                // Only hide if it's a modal overlay AND contains cookie/privacy text
+                if (!isModalOverlay(el)) continue;
+                
+                const text = (el.textContent || '').toLowerCase();
+                if (text.includes('cookie') || 
+                    text.includes('privacy') || 
+                    text.includes('consent') || 
+                    text.includes('value your privacy')) {
+                  const style = window.getComputedStyle(el);
+                  if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
+                    hideBanner(el);
+                  }
+                }
+              }
+            } catch (e) {
+              // Invalid selector, continue
+            }
+          }
+        }
+
+        function setupBannerButtons() {
+          if (hasDismissed()) return;
+
+          // Only look for buttons within modal/dialog elements
+          const modals = document.querySelectorAll('[role="dialog"], [role="alertdialog"]');
+          
+          modals.forEach(function(modal) {
+            if (!isModalOverlay(modal)) return;
+            
+            const text = (modal.textContent || '').toLowerCase();
+            // Only set up handlers for cookie/privacy modals
+            if (!text.includes('cookie') && !text.includes('privacy') && !text.includes('consent')) {
+              return;
+            }
+            
+            const buttons = modal.querySelectorAll('button, a, [role="button"], [onclick]');
+            buttons.forEach(function(btn) {
+              const btnText = (btn.textContent || '').toLowerCase().trim();
+              if (btnText.includes('accept') || 
+                  btnText.includes('agree') || 
+                  btnText.includes('close') || 
+                  btnText.includes('dismiss') || 
+                  btnText.includes('ok') ||
+                  btnText.includes('decline') ||
+                  btnText.includes('got it')) {
+                
+                btn.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  hideBanner(modal);
+                  return false;
+                }, true);
+              }
+            });
+          });
+        }
+
+        function initCookieBanner() {
+          // If already dismissed, hide any visible banners
+          if (hasDismissed()) {
+            findAndHandleBanner();
+            // Keep checking periodically for dynamically added banners
+            setInterval(findAndHandleBanner, 500);
+          } else {
+            // Set up button handlers
+            setupBannerButtons();
+            // Check periodically for new banners
+            let attempts = 0;
+            const checkInterval = setInterval(function() {
+              attempts++;
+              setupBannerButtons();
+              if (attempts >= 40) { // Stop after 20 seconds
+                clearInterval(checkInterval);
+              }
+            }, 500);
+          }
+        }
+
+        // Use MutationObserver to catch dynamically added banners
+        const observer = new MutationObserver(function(mutations) {
+          if (hasDismissed()) {
+            findAndHandleBanner();
+          } else {
+            setupBannerButtons();
+          }
+        });
+
+        // Initialize
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            initCookieBanner();
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true,
+              attributes: true,
+              attributeFilter: ['style', 'class']
+            });
+          });
+        } else {
+          initCookieBanner();
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['style', 'class']
+          });
+        }
       })();
     </script>
 
