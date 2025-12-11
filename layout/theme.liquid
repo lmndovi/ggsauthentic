@@ -42,14 +42,17 @@
         <p class="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-gray-500">Welcome Offer</p>
         <h3 id="signup-modal-title" class="mb-2 text-3xl font-bold text-gray-900">Join the GGS Family</h3>
         <p class="mb-6 text-lg text-gray-600" id="signup-modal-copy">Create a free account today and unlock 20% off your first order plus early access to new products.</p>
-        <form id="signup-modal-form" method="post" action="/contact" accept-charset="UTF-8" class="flex flex-col gap-3" target="signup-modal-iframe">
-          <input type="hidden" name="form_type" value="contact">
+        <form id="signup-modal-form" method="post" action="/account" accept-charset="UTF-8" class="flex flex-col gap-3" target="signup-modal-iframe">
+          <input type="hidden" name="form_type" value="create_customer">
           <input type="hidden" name="utf8" value="✓">
-          <input type="hidden" name="contact[tags]" value="Signup Modal">
+          <input type="hidden" name="customer[tags]" value="Signup Modal">
+          {% comment %} Auto-generate unique password - customer will set their own password later {% endcomment %}
+          <input type="hidden" name="customer[password]" id="signup-password" value="">
+          <input type="hidden" name="customer[password_confirmation]" id="signup-password-confirm" value="">
           <iframe id="signup-modal-iframe" name="signup-modal-iframe" class="hidden" title="Form submission"></iframe>
           <div id="signup-form-content">
             <div class="flex flex-col gap-3 sm:flex-row">
-              <input type="email" name="contact[email]" id="signup-modal-email" placeholder="Enter your email" required class="w-full rounded-xl border border-gray-300 px-5 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-200" aria-label="Email address">
+              <input type="email" name="customer[email]" id="signup-modal-email" placeholder="Enter your email" required class="w-full rounded-xl border border-gray-300 px-5 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-200" aria-label="Email address">
               <button type="submit" id="signup-submit-btn" class="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-[#bd2d2d] px-6 py-3 text-base font-semibold uppercase tracking-wide text-white shadow-lg transition hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500">Get 20% off</button>
             </div>
             <div id="signup-form-error" class="hidden rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-600"></div>
@@ -115,6 +118,13 @@
             // Get iframe reference
             const iframe = document.getElementById('signup-modal-iframe');
             
+            // Generate unique password before submission
+            function generatePassword() {
+              const timestamp = Date.now();
+              const random = Math.random().toString(36).substring(2, 15);
+              return timestamp + '_' + random + '_GGS';
+            }
+
             // Form submission handler - using iframe to avoid page reload
             form.addEventListener('submit', function(e) {
               const email = emailInput.value.trim();
@@ -149,6 +159,13 @@
                 return;
               }
 
+              // Generate and set password before submission
+              const password = generatePassword();
+              const passwordInput = document.getElementById('signup-password');
+              const passwordConfirmInput = document.getElementById('signup-password-confirm');
+              if (passwordInput) passwordInput.value = password;
+              if (passwordConfirmInput) passwordConfirmInput.value = password;
+
               // Disable submit button
               if (submitBtn) {
                 submitBtn.disabled = true;
@@ -170,18 +187,29 @@
                   const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
                   const iframeContent = iframeDoc.body.innerHTML || '';
                   const iframeText = iframeContent.toLowerCase();
+                  const iframeUrl = iframe.contentWindow.location.href || '';
 
-                  // Check for success indicators
-                  const hasSuccess = iframeText.includes('posted_successfully') || 
-                                    iframeText.includes('success') || 
-                                    iframeText.includes('thank you') ||
-                                    iframeText.includes('message was sent');
+                  // Check for customer creation success indicators
+                  // Shopify redirects to /account on success, or shows success message
+                  const hasSuccess = iframeUrl.includes('/account') && !iframeUrl.includes('/account/register') ||
+                                    iframeText.includes('account created') ||
+                                    iframeText.includes('welcome') ||
+                                    iframeText.includes('successfully') ||
+                                    iframeText.includes('check your email');
 
-                  // Check for error indicators
-                  const hasError = (iframeText.includes('error') && !iframeText.includes('no error')) || 
+                  // Check for error indicators (customer creation errors)
+                  const hasError = iframeText.includes('has already been taken') ||
+                                 iframeText.includes('already exists') ||
+                                 iframeText.includes('email is invalid') ||
+                                 iframeText.includes('password') && iframeText.includes('too short') ||
+                                 iframeText.includes('error') && !iframeText.includes('no error') ||
                                  iframeText.includes('failed') ||
-                                 iframeText.includes('invalid') ||
-                                 iframeText.includes('captcha');
+                                 iframeText.includes('invalid');
+
+                  // Check for duplicate email specifically
+                  const isDuplicateEmail = iframeText.includes('has already been taken') ||
+                                         iframeText.includes('already exists') ||
+                                         iframeText.includes('already registered');
 
                   if (hasSuccess && !hasError) {
                     // Success - show discount code
@@ -194,9 +222,19 @@
                     } catch (err) {
                       console.debug('Storage unavailable', err);
                     }
+                  } else if (isDuplicateEmail) {
+                    // Duplicate email - show friendly message
+                    errorDiv.textContent = 'This email is already registered. Please use a different email or try logging in.';
+                    errorDiv.classList.remove('hidden');
+                    
+                    // Re-enable submit button
+                    if (submitBtn) {
+                      submitBtn.disabled = false;
+                      submitBtn.textContent = 'Get 20% off';
+                    }
                   } else if (hasError) {
-                    // Error - show error message
-                    errorDiv.textContent = 'Unable to submit. Please try again or contact support.';
+                    // Other error - show error message
+                    errorDiv.textContent = 'Unable to create account. Please check your email and try again.';
                     errorDiv.classList.remove('hidden');
                     
                     // Re-enable submit button
@@ -205,28 +243,66 @@
                       submitBtn.textContent = 'Get 20% off';
                     }
                   } else {
-                    // If we can't determine, assume success (Shopify usually redirects on success)
-                    // This handles cases where we can't read iframe content due to CORS
+                    // If we can't determine, check URL for success
+                    // Shopify redirects to /account on successful customer creation
+                    if (iframeUrl.includes('/account') && !iframeUrl.includes('/account/register')) {
+                      // Likely success - show discount code
+                      formContent.classList.add('hidden');
+                      successContent.classList.remove('hidden');
+                      
+                      try {
+                        localStorage.setItem('signupModalDismissed', 'true');
+                      } catch (err) {
+                        console.debug('Storage unavailable', err);
+                      }
+                    } else {
+                      // Can't determine - assume success (Shopify typically redirects on success)
+                      formContent.classList.add('hidden');
+                      successContent.classList.remove('hidden');
+                      
+                      try {
+                        localStorage.setItem('signupModalDismissed', 'true');
+                      } catch (err) {
+                        console.debug('Storage unavailable', err);
+                      }
+                    }
+                  }
+                } catch (err) {
+                  // CORS error - can't read iframe content
+                  // Check iframe URL if accessible
+                  try {
+                    const iframeUrl = iframe.contentWindow.location.href || '';
+                    if (iframeUrl.includes('/account') && !iframeUrl.includes('/account/register')) {
+                      // Likely success - Shopify redirects to /account on success
+                      formContent.classList.add('hidden');
+                      successContent.classList.remove('hidden');
+                      
+                      try {
+                        localStorage.setItem('signupModalDismissed', 'true');
+                      } catch (storageErr) {
+                        console.debug('Storage unavailable', storageErr);
+                      }
+                    } else {
+                      // Can't determine - assume success as fallback
+                      formContent.classList.add('hidden');
+                      successContent.classList.remove('hidden');
+                      
+                      try {
+                        localStorage.setItem('signupModalDismissed', 'true');
+                      } catch (storageErr) {
+                        console.debug('Storage unavailable', storageErr);
+                      }
+                    }
+                  } catch (urlErr) {
+                    // Can't access URL either - assume success
                     formContent.classList.add('hidden');
                     successContent.classList.remove('hidden');
                     
                     try {
                       localStorage.setItem('signupModalDismissed', 'true');
-                    } catch (err) {
-                      console.debug('Storage unavailable', err);
+                    } catch (storageErr) {
+                      console.debug('Storage unavailable', storageErr);
                     }
-                  }
-                } catch (err) {
-                  // CORS error - can't read iframe content
-                  // Assume success (Shopify typically redirects on success)
-                  // This is a safe fallback since failed submissions usually stay on error page
-                  formContent.classList.add('hidden');
-                  successContent.classList.remove('hidden');
-                  
-                  try {
-                    localStorage.setItem('signupModalDismissed', 'true');
-                  } catch (storageErr) {
-                    console.debug('Storage unavailable', storageErr);
                   }
                 }
               });
