@@ -90,12 +90,17 @@
             const copyIcon = document.getElementById('copy-icon');
             const checkIcon = document.getElementById('check-icon');
             const discountCode = 'GGSAUTH20';
-            const signupSuccessCopy = 'Welcome to the GGS family. Genuinely authentic always';
+            const signupSuccessTitle = 'Welcome to the GGS family';
+            const signupSuccessCopy = 'Genuinely authentic always';
+            const modalTitle = document.getElementById('signup-modal-title');
             const modalCopy = document.getElementById('signup-modal-copy');
 
             function showSignupSuccess() {
               formContent.classList.add('hidden');
               successContent.classList.remove('hidden');
+              if (modalTitle) {
+                modalTitle.textContent = signupSuccessTitle;
+              }
               if (modalCopy) {
                 modalCopy.textContent = signupSuccessCopy;
               }
