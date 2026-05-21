@@ -34,7 +34,7 @@
     {% section 'footer' %}
     
       {% if customer == null %}
-    <div id="signup-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/70 px-4" role="dialog" aria-modal="true" aria-labelledby="signup-modal-title" aria-describedby="signup-modal-copy" style="display: none !important;">
+    <div id="signup-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900/70 px-4" role="dialog" aria-modal="true" aria-labelledby="signup-modal-title" aria-describedby="signup-modal-copy">
       <div class="relative w-full max-w-lg rounded-2xl border border-gray-200 bg-white px-8 py-10 text-center shadow-2xl">
         <button type="button" id="signup-modal-close" class="absolute right-4 top-4 text-gray-400 transition hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" aria-label="Close signup offer">
           <span aria-hidden="true">&times;</span>
@@ -90,6 +90,21 @@
             const copyIcon = document.getElementById('copy-icon');
             const checkIcon = document.getElementById('check-icon');
             const discountCode = 'GGSAUTH20';
+            const signupSuccessCopy = 'Welcome to the GGS family. Genuinely authentic always';
+            const modalCopy = document.getElementById('signup-modal-copy');
+
+            function showSignupSuccess() {
+              formContent.classList.add('hidden');
+              successContent.classList.remove('hidden');
+              if (modalCopy) {
+                modalCopy.textContent = signupSuccessCopy;
+              }
+              try {
+                localStorage.setItem('signupModalSignedUp', 'true');
+              } catch (err) {
+                console.debug('Storage unavailable', err);
+              }
+            }
 
             if (!form) return;
 
@@ -144,16 +159,10 @@
               if (devMode) {
                 e.preventDefault();
                 setTimeout(function() {
-                  formContent.classList.add('hidden');
-                  successContent.classList.remove('hidden');
+                  showSignupSuccess();
                   if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Get 20% off';
-                  }
-                  try {
-                    localStorage.setItem('signupModalDismissed', 'true');
-                  } catch (err) {
-                    console.debug('Storage unavailable', err);
                   }
                 }, 500);
                 return;
@@ -212,16 +221,7 @@
                                          iframeText.includes('already registered');
 
                   if (hasSuccess && !hasError) {
-                    // Success - show discount code
-                    formContent.classList.add('hidden');
-                    successContent.classList.remove('hidden');
-                    
-                    // Store submission in localStorage
-                    try {
-                      localStorage.setItem('signupModalDismissed', 'true');
-                    } catch (err) {
-                      console.debug('Storage unavailable', err);
-                    }
+                    showSignupSuccess();
                   } else if (isDuplicateEmail) {
                     // Duplicate email - show friendly message
                     errorDiv.textContent = 'This email is already registered. Please use a different email or try logging in.';
@@ -246,25 +246,9 @@
                     // If we can't determine, check URL for success
                     // Shopify redirects to /account on successful customer creation
                     if (iframeUrl.includes('/account') && !iframeUrl.includes('/account/register')) {
-                      // Likely success - show discount code
-                      formContent.classList.add('hidden');
-                      successContent.classList.remove('hidden');
-                      
-                      try {
-                        localStorage.setItem('signupModalDismissed', 'true');
-                      } catch (err) {
-                        console.debug('Storage unavailable', err);
-                      }
+                      showSignupSuccess();
                     } else {
-                      // Can't determine - assume success (Shopify typically redirects on success)
-                      formContent.classList.add('hidden');
-                      successContent.classList.remove('hidden');
-                      
-                      try {
-                        localStorage.setItem('signupModalDismissed', 'true');
-                      } catch (err) {
-                        console.debug('Storage unavailable', err);
-                      }
+                      showSignupSuccess();
                     }
                   }
                 } catch (err) {
@@ -273,36 +257,12 @@
                   try {
                     const iframeUrl = iframe.contentWindow.location.href || '';
                     if (iframeUrl.includes('/account') && !iframeUrl.includes('/account/register')) {
-                      // Likely success - Shopify redirects to /account on success
-                      formContent.classList.add('hidden');
-                      successContent.classList.remove('hidden');
-                      
-                      try {
-                        localStorage.setItem('signupModalDismissed', 'true');
-                      } catch (storageErr) {
-                        console.debug('Storage unavailable', storageErr);
-                      }
+                      showSignupSuccess();
                     } else {
-                      // Can't determine - assume success as fallback
-                      formContent.classList.add('hidden');
-                      successContent.classList.remove('hidden');
-                      
-                      try {
-                        localStorage.setItem('signupModalDismissed', 'true');
-                      } catch (storageErr) {
-                        console.debug('Storage unavailable', storageErr);
-                      }
+                      showSignupSuccess();
                     }
                   } catch (urlErr) {
-                    // Can't access URL either - assume success
-                    formContent.classList.add('hidden');
-                    successContent.classList.remove('hidden');
-                    
-                    try {
-                      localStorage.setItem('signupModalDismissed', 'true');
-                    } catch (storageErr) {
-                      console.debug('Storage unavailable', storageErr);
-                    }
+                    showSignupSuccess();
                   }
                 }
               });
@@ -315,7 +275,8 @@
     <script>
       (function () {
         const modalId = 'signup-modal';
-        const storageKey = 'signupModalDismissed';
+        const signedUpStorageKey = 'signupModalSignedUp';
+        const sessionDismissKey = 'signupModalSessionDismissed';
         const delayMs = 1500;
 
         let storageAvailable = null;
@@ -334,26 +295,34 @@
           }
         }
 
-        function hasDismissed() {
+        function hasSignedUp() {
           if (!canUseStorage()) return false;
-          return localStorage.getItem(storageKey) === 'true';
+          return localStorage.getItem(signedUpStorageKey) === 'true';
         }
 
-        function setDismissed() {
-          if (!canUseStorage()) return;
-          localStorage.setItem(storageKey, 'true');
+        function hasSessionDismissed() {
+          try {
+            return sessionStorage.getItem(sessionDismissKey) === 'true';
+          } catch (error) {
+            return false;
+          }
+        }
+
+        function setSessionDismissed() {
+          try {
+            sessionStorage.setItem(sessionDismissKey, 'true');
+          } catch (error) {
+            console.debug('Session storage unavailable', error);
+          }
         }
 
         function showModal() {
           const modal = document.getElementById(modalId);
           if (!modal) return;
-          // Check again before showing (in case dismissed during delay)
-          if (hasDismissed()) {
+          if (hasSignedUp() || hasSessionDismissed()) {
             return;
           }
-          modal.style.display = '';
           modal.classList.remove('hidden');
-          // Use flex for desktop, block for mobile
           if (window.innerWidth >= 640) {
             modal.style.display = 'flex';
           } else {
@@ -370,13 +339,12 @@
           if (!modal) return;
           modal.classList.add('hidden');
           modal.style.display = 'none';
-          setDismissed();
+          setSessionDismissed();
         }
 
-        // Check dismissal state immediately and hide modal if already dismissed
         function initModal() {
           const modal = document.getElementById(modalId);
-          if (modal && hasDismissed()) {
+          if (modal && (hasSignedUp() || hasSessionDismissed())) {
             modal.style.display = 'none';
             modal.classList.add('hidden');
             return;
@@ -408,8 +376,7 @@
               });
             }
 
-            // Only show modal if it hasn't been dismissed
-            if (!hasDismissed()) {
+            if (!hasSignedUp() && !hasSessionDismissed()) {
               setTimeout(showModal, delayMs);
             }
           });
@@ -435,7 +402,7 @@
             });
           }
 
-          if (!hasDismissed()) {
+          if (!hasSignedUp() && !hasSessionDismissed()) {
             setTimeout(showModal, delayMs);
           }
         }
