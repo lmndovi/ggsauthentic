@@ -1,0 +1,110 @@
+<div class="py-8">
+  {% paginate blog.articles by section.settings.posts_per_page %}
+    <div class="max-w-6xl mx-auto px-4">
+      <header class="text-center mb-10">
+        <p class="text-sm uppercase tracking-wide text-gray-500 font-bold mb-2">{{ section.settings.eyebrow }}</p>
+        <h1 class="text-3xl md:text-4xl font-bold uppercase">{{ blog.title }}</h1>
+        {% if section.settings.subheading != blank %}
+          <p class="text-gray-600 mt-3 max-w-2xl mx-auto">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </header>
+
+      {% if blog.articles.size > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for article in blog.articles %}
+            {% assign event_date = article.metafields.custom.event_date %}
+            {% assign event_location = article.metafields.custom.event_location %}
+
+            <article class="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
+              <a href="{{ article.url }}" class="block group">
+                {% if article.image != blank %}
+                  <img
+                    src="{{ article.image | image_url: width: 600 }}"
+                    alt="{{ article.title }}"
+                    class="w-full h-48 object-cover group-hover:opacity-90 transition"
+                    loading="lazy"
+                  >
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag: 'w-full h-48 object-cover bg-gray-100' }}
+                {% endif %}
+
+                <div class="p-4">
+                  <div class="text-xs uppercase tracking-wide text-gray-500 mb-2">
+                    <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'abbreviated_date' }}</time>
+                    {% if event_date != blank %}
+                      <span class="mx-1">·</span>
+                      <span>{{ event_date }}</span>
+                    {% endif %}
+                  </div>
+
+                  <h2 class="text-xl font-semibold mb-2 group-hover:underline">{{ article.title }}</h2>
+
+                  {% if event_location != blank %}
+                    <p class="text-sm text-[#ffb045] font-medium mb-2">{{ event_location }}</p>
+                  {% endif %}
+
+                  {% if article.excerpt.size > 0 %}
+                    <p class="text-sm text-gray-600">{{ article.excerpt | strip_html | truncatewords: 22 }}</p>
+                  {% else %}
+                    <p class="text-sm text-gray-600">{{ article.content | strip_html | truncatewords: 22 }}</p>
+                  {% endif %}
+                </div>
+              </a>
+
+              <div class="px-4 pb-4">
+                <a href="{{ article.url }}" class="font-medium text-gray-900 hover:text-[#ffb045] text-sm">{{ section.settings.read_more_text }} →</a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+
+        <div class="mt-10">
+          {% render 'pagination', pagination: paginate %}
+        </div>
+      {% else %}
+        <p class="text-center text-xl text-gray-600 py-16">{{ section.settings.empty_message }}</p>
+      {% endif %}
+    </div>
+  {% endpaginate %}
+</div>
+
+{% schema %}
+{
+  "name": "Events Blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "News & events"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Markets, tastings, pop-ups and what's happening at GG's Authentic"
+    },
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "label": "Posts per page",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Read more label",
+      "default": "Read more"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Empty state message",
+      "default": "No events posted yet. Check back soon!"
+    }
+  ]
+}
+{% endschema %}

@@ -12,8 +12,11 @@
       "type": "recipe-list",
       "settings": {
         "blog": "recipes",
-        "posts_per_page": 3,
-        "read_more_text": "Read full recipe"
+        "heading": "Community Recipes",
+        "subheading": "Dishes shared by GG's customers",
+        "posts_per_page": 6,
+        "read_more_text": "Read full recipe",
+        "show_empty_state": true
       }
     }
   },

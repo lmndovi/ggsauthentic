@@ -40,6 +40,19 @@
         "number_of_products_to_show": 4,
         "button_text": "View All"
       }
+    },
+    "recipe-list": {
+      "type": "recipe-list",
+      "settings": {
+        "blog": "recipes",
+        "heading": "Cook with GG's",
+        "subheading": "Caribbean-inspired recipes using our sauces & marinades",
+        "posts_per_page": 3,
+        "read_more_text": "Read full recipe",
+        "view_all_text": "See all recipes",
+        "view_all_link": "shopify:\/\/pages\/recipes",
+        "show_empty_state": false
+      }
     }
   },
   "order": [
@@ -47,6 +60,7 @@
     "featured-collection",
     "secondary-collection",
     "reviews",
+    "recipe-list",
     "discount-signup"
   ]
 }

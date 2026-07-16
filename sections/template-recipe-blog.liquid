@@ -1,0 +1,48 @@
+{% render 'recipe-blog-list',
+  eyebrow: section.settings.eyebrow,
+  subheading: section.settings.subheading,
+  posts_per_page: section.settings.posts_per_page,
+  read_more_text: section.settings.read_more_text,
+  empty_message: section.settings.empty_message
+%}
+
+{% schema %}
+{
+  "name": "Recipe Blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Cook with GG's"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Caribbean-inspired recipes using our sauces and marinades"
+    },
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "label": "Recipes per page",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "label": "Read more label",
+      "default": "Read full recipe"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Empty state message",
+      "default": "No recipes published yet."
+    }
+  ]
+}
+{% endschema %}

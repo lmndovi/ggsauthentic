@@ -1,0 +1,414 @@
+{% comment %}
+  Shared recipe article layout. Used by template-recipe-article and automatically for blog.handle == 'recipes'.
+{% endcomment %}
+
+{% assign product_handle = article.metafields.custom.product_handle %}
+{% if product_handle == blank %}
+  {% assign title_down = article.title | downcase %}
+  {% if title_down contains 'boozy blu' %}
+    {% assign product_handle = 'boozy-blu' %}
+  {% elsif title_down contains 'pineapple hot' %}
+    {% assign product_handle = 'pineapple-xtra-hot-1' %}
+  {% elsif title_down contains 'cucumber' and title_down contains 'mild' %}
+    {% assign product_handle = 'cucumber-mango-mild' %}
+  {% elsif title_down contains 'cucumber' and title_down contains 'hot' %}
+    {% assign product_handle = 'cucumber-mango-hot' %}
+  {% elsif title_down contains 'mango hot' %}
+    {% assign product_handle = 'mango-hot' %}
+  {% elsif title_down contains 'marinade' and title_down contains 'mild' %}
+    {% assign product_handle = 'marinade-mild' %}
+  {% elsif title_down contains 'marinade' %}
+    {% assign product_handle = 'marinade-spicy' %}
+  {% endif %}
+{% endif %}
+
+{% assign linked_product = all_products[product_handle] %}
+{% if linked_product == blank and product_handle != blank %}
+  {% for p in collections.all.products %}
+    {% if p.handle == product_handle %}
+      {% assign linked_product = p %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+{% if linked_product == blank %}
+  {% assign search_text = article.title | downcase | append: ' ' | append: article.content | strip_html | downcase %}
+  {% for p in collections.all.products %}
+    {% assign pt = p.title | downcase %}
+    {% if search_text contains pt %}
+      {% assign linked_product = p %}
+      {% assign product_handle = p.handle %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign recipe_blog = blog %}
+{% assign prep_time = article.metafields.custom.prep_time %}
+{% assign cook_time = article.metafields.custom.cook_time %}
+{% assign servings = article.metafields.custom.servings %}
+{% assign difficulty = article.metafields.custom.difficulty %}
+{% assign ingredients_raw = article.metafields.custom.ingredients.value | default: article.metafields.custom.ingredients %}
+
+{% assign shop_cta = shop_cta_text | default: 'Shop this sauce' %}
+{% assign related_title = related_heading | default: 'More recipes to try' %}
+{% assign related_max = related_limit | default: 3 %}
+
+<article class="recipe-article py-8" itemscope itemtype="https://schema.org/Recipe">
+  {% if article.image != blank %}
+    <div itemprop="image" class="max-w-6xl mx-auto px-4 mb-8">
+      <img
+        class="w-full h-64 md:h-[28rem] object-cover rounded-2xl shadow-lg"
+        src="{{ article.image | image_url: width: 1400 }}"
+        alt="{{ article.image.alt | default: article.title }}"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+        loading="eager"
+      >
+    </div>
+  {% endif %}
+
+  <header class="max-w-4xl mx-auto px-4 text-center mb-8">
+    <a href="{{ blog.url }}" class="text-sm uppercase text-[#ffb045] hover:text-[#e59b30] font-bold tracking-wide">{{ blog.title }}</a>
+    <h1 class="text-3xl md:text-5xl font-bold mt-2 mb-4 text-gray-900" itemprop="name">{{ article.title }}</h1>
+
+    {% if article.excerpt != blank %}
+      <p class="text-lg text-gray-600 mb-6 leading-relaxed" itemprop="description">{{ article.excerpt | strip_html }}</p>
+    {% endif %}
+
+    <div class="flex flex-wrap items-center justify-center gap-3 text-sm text-gray-700 mb-4">
+      {% if prep_time != blank %}
+        <span class="recipe-badge">
+          <strong>Prep:</strong>
+          <span itemprop="prepTime">{{ prep_time }}</span>
+        </span>
+      {% endif %}
+      {% if cook_time != blank %}
+        <span class="recipe-badge">
+          <strong>Cook:</strong>
+          <span itemprop="cookTime">{{ cook_time }}</span>
+        </span>
+      {% endif %}
+      {% if servings != blank %}
+        <span class="recipe-badge">
+          <strong>Serves:</strong>
+          <span itemprop="recipeYield">{{ servings }}</span>
+        </span>
+      {% endif %}
+      {% if difficulty != blank %}
+        <span class="recipe-badge recipe-badge--accent">
+          <strong>Level:</strong> {{ difficulty }}
+        </span>
+      {% endif %}
+    </div>
+
+    {% if article.tags.size > 0 %}
+      <div class="flex flex-wrap justify-center gap-2">
+        {% for tag in article.tags %}
+          <span class="recipe-tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 mb-12">
+    <aside class="lg:col-span-4 space-y-6">
+      {% if ingredients_raw != blank %}
+        <div class="recipe-card recipe-card--ingredients lg:sticky lg:top-6">
+          <h2 class="recipe-card__title">Ingredients</h2>
+          <ul class="recipe-ingredients" itemprop="recipeIngredient">
+            {% assign ingredient_lines = ingredients_raw | newline_to_br | split: '<br />' %}
+            {% for line in ingredient_lines %}
+              {% assign ingredient = line | strip %}
+              {% if ingredient != blank %}
+                <li>{{ ingredient }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% if linked_product != blank %}
+        <div class="recipe-card recipe-card--product">
+          <p class="text-xs uppercase tracking-wide text-gray-500 mb-3 font-semibold">Made with</p>
+          <a href="{{ linked_product.url }}" class="block group">
+            {% if linked_product.featured_image %}
+              <img
+                src="{{ linked_product.featured_image | image_url: width: 400 }}"
+                alt="{{ linked_product.title }}"
+                class="w-full h-44 object-contain rounded-lg mb-3 bg-white group-hover:opacity-90 transition"
+                loading="lazy"
+              >
+            {% endif %}
+            <h3 class="font-bold text-lg mb-1 group-hover:underline text-gray-900">{{ linked_product.title }}</h3>
+            <p class="text-gray-700 mb-4">{{ linked_product.price | money }}</p>
+          </a>
+          <a href="{{ linked_product.url }}" class="recipe-shop-btn">
+            {{ shop_cta }}
+          </a>
+        </div>
+      {% endif %}
+    </aside>
+
+    <div class="lg:col-span-8">
+      <div itemprop="recipeInstructions" class="recipe-body rte">
+        {{ article.content }}
+      </div>
+    </div>
+  </div>
+
+  {% assign related_count = 0 %}
+  {% assign current_product_handle = product_handle %}
+
+  {% for related in recipe_blog.articles %}
+    {% if related.id != article.id %}
+      {% assign related_handle = related.metafields.custom.product_handle %}
+      {% assign is_related = false %}
+      {% if related_handle == current_product_handle and current_product_handle != blank %}
+        {% assign is_related = true %}
+      {% else %}
+        {% for tag in article.tags %}
+          {% if related.tags contains tag %}
+            {% assign is_related = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      {% if is_related %}
+        {% assign related_count = related_count | plus: 1 %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% if related_count > 0 %}
+    <div class="max-w-6xl mx-auto px-4 py-12 border-t border-gray-200">
+      <h2 class="text-2xl font-bold text-center mb-8 uppercase text-gray-900">{{ related_title }}</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% assign shown = 0 %}
+        {% for related in recipe_blog.articles %}
+          {% if related.id != article.id and shown < related_max %}
+            {% assign related_handle = related.metafields.custom.product_handle %}
+            {% assign is_related = false %}
+            {% if related_handle == current_product_handle and current_product_handle != blank %}
+              {% assign is_related = true %}
+            {% else %}
+              {% for tag in article.tags %}
+                {% if related.tags contains tag %}
+                  {% assign is_related = true %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+            {% if is_related %}
+              {% assign shown = shown | plus: 1 %}
+              {% assign related_product = all_products[related_handle] %}
+              <div class="recipe-related-card">
+                <a href="{{ related.url }}" class="block group">
+                  {% if related.image != blank %}
+                    <img src="{{ related.image | image_url: width: 600 }}" alt="{{ related.title }}" class="w-full h-44 object-cover rounded-lg mb-3" loading="lazy">
+                  {% elsif related_product.featured_image %}
+                    <img src="{{ related_product.featured_image | image_url: width: 600 }}" alt="{{ related_product.title }}" class="w-full h-44 object-cover rounded-lg mb-3" loading="lazy">
+                  {% endif %}
+                  <h3 class="font-semibold text-lg mb-2 group-hover:underline text-gray-900">{{ related.title }}</h3>
+                  <p class="text-sm text-gray-600">{{ related.excerpt | strip_html | truncatewords: 15 }}</p>
+                </a>
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="max-w-4xl mx-auto px-4 pb-12 text-center">
+    <a href="{{ blog.url }}" class="inline-block uppercase font-bold border border-gray-900 px-6 py-3 rounded-lg hover:bg-gray-50 transition text-gray-900">
+      ← Back to {{ blog.title }}
+    </a>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Recipe",
+  "name": {{ article.title | json }},
+  {% if article.excerpt != blank %}
+  "description": {{ article.excerpt | strip_html | json }},
+  {% endif %}
+  {% if article.image %}
+  "image": {{ article.image | image_url: width: 1200 | prepend: 'https:' | json }},
+  {% endif %}
+  "author": {
+    "@type": "Organization",
+    "name": {{ shop.name | json }}
+  },
+  "datePublished": {{ article.published_at | date: '%Y-%m-%d' | json }},
+  {% if prep_time != blank %}
+  "prepTime": {{ prep_time | json }},
+  {% endif %}
+  {% if cook_time != blank %}
+  "cookTime": {{ cook_time | json }},
+  {% endif %}
+  {% if servings != blank %}
+  "recipeYield": {{ servings | json }},
+  {% endif %}
+  {% if ingredients_raw != blank %}
+  "recipeIngredient": [
+    {% assign ingredient_lines = ingredients_raw | newline_to_br | split: '<br />' %}
+    {% assign first_ingredient = true %}
+    {% for line in ingredient_lines %}
+      {% assign ingredient = line | strip %}
+      {% if ingredient != blank %}
+        {% unless first_ingredient %},{% endunless %}{{ ingredient | json }}
+        {% assign first_ingredient = false %}
+      {% endif %}
+    {% endfor %}
+  ],
+  {% endif %}
+  "recipeInstructions": {{ article.content | strip_html | json }}
+}
+</script>
+
+<style>
+  .recipe-badge {
+    display: inline-block;
+    background: #f3f4f6;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+  }
+  .recipe-badge--accent {
+    background: rgba(255, 176, 69, 0.2);
+  }
+  .recipe-tag {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid #e5e7eb;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    color: #4b5563;
+  }
+  .recipe-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+  .recipe-card--product {
+    background: rgba(255, 176, 69, 0.08);
+    border-color: rgba(255, 176, 69, 0.35);
+  }
+  .recipe-card__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+  .recipe-ingredients {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .recipe-ingredients li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.65rem;
+    color: #374151;
+    line-height: 1.5;
+  }
+  .recipe-ingredients li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #ffb045;
+    font-weight: 700;
+  }
+  .recipe-shop-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #ffb045;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: background 0.2s;
+  }
+  .recipe-shop-btn:hover {
+    background: #e59b30;
+  }
+  .recipe-related-card {
+    background: #fff;
+    border: 1px solid #f3f4f6;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Rich text / pasted content formatting */
+  .recipe-body {
+    color: #374151;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .recipe-body > *:first-child {
+    margin-top: 0;
+  }
+  .recipe-body p {
+    margin-bottom: 1rem;
+  }
+  .recipe-body h2,
+  .recipe-body h3,
+  .recipe-body h4 {
+    color: #111827;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .recipe-body h2 { font-size: 1.5rem; }
+  .recipe-body h3 { font-size: 1.25rem; }
+  .recipe-body h4 { font-size: 1.125rem; }
+  .recipe-body ul,
+  .recipe-body ol {
+    margin: 0 0 1.25rem 0;
+    padding-left: 1.5rem;
+  }
+  .recipe-body ul {
+    list-style: disc;
+  }
+  .recipe-body ol {
+    list-style: decimal;
+  }
+  .recipe-body li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
+  }
+  .recipe-body li::marker {
+    color: #ffb045;
+    font-weight: 600;
+  }
+  .recipe-body strong {
+    color: #111827;
+    font-weight: 600;
+  }
+  .recipe-body a {
+    color: #ffb045;
+    text-decoration: underline;
+  }
+  .recipe-body a:hover {
+    color: #e59b30;
+  }
+  .recipe-body blockquote {
+    border-left: 4px solid #ffb045;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #4b5563;
+  }
+</style>

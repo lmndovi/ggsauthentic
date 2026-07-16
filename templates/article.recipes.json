@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "template": {
+      "type": "template-recipe-article",
+      "settings": {
+        "shop_cta_text": "Shop this sauce",
+        "related_heading": "More recipes to try",
+        "related_limit": 3
+      }
+    }
+  },
+  "order": ["template"]
+}

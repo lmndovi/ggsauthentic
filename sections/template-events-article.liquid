@@ -1,0 +1,81 @@
+<article class="py-8" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="flex items-center justify-center px-4">
+    <div class="max-w-4xl text-center">
+      <a href="{{ blog.url }}" class="text-base uppercase text-gray-500 hover:text-gray-900 font-bold tracking-wide">{{ blog.title }}</a>
+      <h1 class="text-4xl md:text-5xl font-bold mt-2 mb-4" itemprop="headline">{{ article.title }}</h1>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-600 mb-6">
+        <time itemprop="datePublished" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+          Published {{ article.published_at | date: format: 'on_date' }}
+        </time>
+        {% if article.metafields.custom.event_date != blank %}
+          <span class="bg-gray-100 px-3 py-1 rounded-full">
+            <strong>Event date:</strong> {{ article.metafields.custom.event_date }}
+          </span>
+        {% endif %}
+        {% if article.metafields.custom.event_location != blank %}
+          <span class="bg-[#ffb045]/20 px-3 py-1 rounded-full">
+            <strong>Location:</strong> {{ article.metafields.custom.event_location }}
+          </span>
+        {% endif %}
+      </div>
+
+      {% if article.excerpt != blank %}
+        <p class="text-lg text-gray-600 mb-6" itemprop="description">{{ article.excerpt | strip_html }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if article.image != blank %}
+    <div itemprop="image" class="max-w-5xl mx-auto px-4 my-6">
+      <img
+        class="w-full h-72 md:h-96 object-cover rounded-xl shadow-lg"
+        src="{{ article.image | image_url: width: 1200 }}"
+        alt="{{ article.image.alt | default: article.title }}"
+        loading="eager"
+      >
+    </div>
+  {% endif %}
+
+  <div class="flex items-center justify-center px-4">
+    <div itemprop="articleBody" class="max-w-4xl prose prose-lg">
+      {{ article.content }}
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 mt-10 pt-8 border-t border-gray-200 text-center">
+    <a href="{{ blog.url }}" class="inline-block uppercase font-bold border border-black px-6 py-2 rounded-lg hover:bg-gray-50 transition">
+      ← Back to {{ blog.title }}
+    </a>
+  </div>
+</article>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ article.title | json }},
+  {% if article.excerpt != blank %}
+  "description": {{ article.excerpt | strip_html | json }},
+  {% endif %}
+  {% if article.image %}
+  "image": {{ article.image | image_url: width: 1200 | prepend: 'https:' | json }},
+  {% endif %}
+  "datePublished": {{ article.published_at | date: '%Y-%m-%d' | json }},
+  "author": {
+    "@type": "Organization",
+    "name": {{ shop.name | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ shop.name | json }}
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Event Article",
+  "settings": []
+}
+{% endschema %}

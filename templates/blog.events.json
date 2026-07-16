@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "template": {
+      "type": "template-events-blog",
+      "settings": {
+        "eyebrow": "News & events",
+        "subheading": "Markets, tastings, pop-ups and what's happening at GG's Authentic",
+        "posts_per_page": 6,
+        "read_more_text": "Read more"
+      }
+    }
+  },
+  "order": ["template"]
+}

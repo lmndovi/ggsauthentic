@@ -46,10 +46,23 @@
     "17240919406b968976": {
       "type": "apps",
       "settings": {}
+    },
+    "product-recipes": {
+      "type": "product-recipes",
+      "settings": {
+        "blog": "recipes",
+        "heading": "Recipes with this product",
+        "subheading": "Caribbean-inspired ideas from the GG's kitchen",
+        "recipes_to_show": 3,
+        "read_more_text": "View recipe",
+        "view_all_text": "See all recipes",
+        "view_all_link": "shopify:\/\/pages\/recipes"
+      }
     }
   },
   "order": [
     "template",
+    "product-recipes",
     "17240919406b968976"
   ]
 }

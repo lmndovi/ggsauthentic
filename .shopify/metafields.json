@@ -1,0 +1,60 @@
+{
+  "definitions": [
+    {
+      "type": "article",
+      "namespace": "custom",
+      "key": "product_handle",
+      "name": "Product handle",
+      "description": "Recipes blog only. Shopify product handle used in this recipe (e.g. marinade-mild)."
+    },
+    {
+      "type": "article",
+      "namespace": "custom",
+      "key": "prep_time",
+      "name": "Prep time",
+      "description": "Recipes blog only. Preparation time (e.g. 15 mins)."
+    },
+    {
+      "type": "article",
+      "namespace": "custom",
+      "key": "cook_time",
+      "name": "Cook time",
+      "description": "Recipes blog only. Cooking time (e.g. 30 mins)."
+    },
+    {
+      "type": "article",
+      "namespace": "custom",
+      "key": "servings",
+      "name": "Servings",
+      "description": "Recipes blog only. Number of servings (e.g. 4)."
+    },
+    {
+      "type": "article",
+      "namespace": "custom",
+      "key": "difficulty",
+      "name": "Difficulty",
+      "description": "Recipes blog only. Easy, Medium, or Hard."
+    },
+    {
+      "type": "article",
+      "namespace": "custom",
+      "key": "ingredients",
+      "name": "Ingredients",
+      "description": "Recipes blog only. One ingredient per line."
+    },
+    {
+      "type": "article",
+      "namespace": "custom",
+      "key": "event_date",
+      "name": "Event date",
+      "description": "Events blog only. When the event takes place (e.g. 14 July 2026, 11am–4pm)."
+    },
+    {
+      "type": "article",
+      "namespace": "custom",
+      "key": "event_location",
+      "name": "Event location",
+      "description": "Events blog only. Venue or city (e.g. Borough Market, London)."
+    }
+  ]
+}

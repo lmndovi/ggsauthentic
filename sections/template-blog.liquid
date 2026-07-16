@@ -1,3 +1,11 @@
+{% if blog.handle == 'recipes' %}
+  {% render 'recipe-blog-list',
+    eyebrow: "Cook with GG's",
+    subheading: 'Caribbean-inspired recipes using our sauces and marinades',
+    posts_per_page: 6,
+    read_more_text: 'Read full recipe'
+  %}
+{% else %}
  {% assign fusion_menu_linklist = linklists[section.settings.fusion-menu].links %}
 
 
@@ -69,6 +77,7 @@
         {% endif %}
     {% endpaginate %}
 </div>
+{% endif %}
 
 
 

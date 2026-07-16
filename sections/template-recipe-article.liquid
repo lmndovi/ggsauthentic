@@ -1,0 +1,34 @@
+{% render 'recipe-article',
+  shop_cta_text: section.settings.shop_cta_text,
+  related_heading: section.settings.related_heading,
+  related_limit: section.settings.related_limit
+%}
+
+{% schema %}
+{
+  "name": "Recipe Article",
+  "settings": [
+    {
+      "type": "text",
+      "id": "shop_cta_text",
+      "label": "Shop CTA text",
+      "default": "Shop this sauce"
+    },
+    {
+      "type": "text",
+      "id": "related_heading",
+      "label": "Related recipes heading",
+      "default": "More recipes to try"
+    },
+    {
+      "type": "range",
+      "id": "related_limit",
+      "label": "Related recipes to show",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    }
+  ]
+}
+{% endschema %}

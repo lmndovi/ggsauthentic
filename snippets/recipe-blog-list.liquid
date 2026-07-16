@@ -1,0 +1,93 @@
+{% comment %}
+  Recipe blog listing. Used by template-recipe-blog and automatically when blog.handle == 'recipes'.
+{% endcomment %}
+
+{% assign eyebrow_text = eyebrow | default: "Cook with GG's" %}
+{% assign subheading_text = subheading | default: 'Caribbean-inspired recipes using our sauces and marinades' %}
+{% assign posts_limit = posts_per_page | default: 6 %}
+{% assign read_more = read_more_text | default: 'Read full recipe' %}
+{% assign empty_msg = empty_message | default: 'No recipes published yet.' %}
+
+<div class="py-8">
+  {% paginate blog.articles by posts_limit %}
+    <div class="max-w-6xl mx-auto px-4">
+      <header class="text-center mb-10">
+        <p class="text-sm uppercase tracking-wide text-[#ffb045] font-bold mb-2">{{ eyebrow_text }}</p>
+        <h1 class="text-3xl md:text-4xl font-bold uppercase text-gray-900">{{ blog.title }}</h1>
+        {% if subheading_text != blank %}
+          <p class="text-gray-600 mt-3 max-w-2xl mx-auto">{{ subheading_text }}</p>
+        {% endif %}
+      </header>
+
+      {% if blog.articles.size > 0 %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {% for article in blog.articles %}
+            {% assign handle = article.metafields.custom.product_handle %}
+            {% assign linked_product = all_products[handle] %}
+            {% assign cook_time = article.metafields.custom.cook_time %}
+
+            <article class="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
+              <a href="{{ article.url }}" class="block group">
+                {% if article.image != blank %}
+                  <img
+                    src="{{ article.image | image_url: width: 600 }}"
+                    alt="{{ article.title }}"
+                    class="w-full h-48 object-cover group-hover:opacity-90 transition"
+                    loading="lazy"
+                  >
+                {% elsif linked_product.featured_image %}
+                  <img
+                    src="{{ linked_product.featured_image | image_url: width: 600 }}"
+                    alt="{{ linked_product.title }}"
+                    class="w-full h-48 object-cover group-hover:opacity-90 transition"
+                    loading="lazy"
+                  >
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag: 'w-full h-48 object-cover bg-gray-100' }}
+                {% endif %}
+
+                <div class="p-4">
+                  <div class="flex flex-wrap gap-2 mb-3">
+                    {% if cook_time != blank %}
+                      <span class="text-xs bg-gray-100 px-2 py-1 rounded">{{ cook_time }}</span>
+                    {% endif %}
+                    {% for tag in article.tags limit: 2 %}
+                      <span class="text-xs border border-gray-200 px-2 py-1 rounded uppercase">{{ tag }}</span>
+                    {% endfor %}
+                  </div>
+
+                  <h2 class="text-xl font-semibold mb-2 group-hover:underline text-gray-900">{{ article.title }}</h2>
+
+                  {% if article.excerpt.size > 0 %}
+                    <p class="text-sm text-gray-600">{{ article.excerpt | strip_html | truncatewords: 20 }}</p>
+                  {% else %}
+                    <p class="text-sm text-gray-600">{{ article.content | strip_html | truncatewords: 20 }}</p>
+                  {% endif %}
+                </div>
+              </a>
+
+              {% if linked_product %}
+                <div class="px-4 pb-4">
+                  <p class="text-sm text-gray-600">
+                    Made using:
+                    <a href="{{ linked_product.url }}" class="text-[#ffb045] font-medium hover:underline">{{ linked_product.title }}</a>
+                  </p>
+                </div>
+              {% endif %}
+
+              <div class="px-4 pb-4">
+                <a href="{{ article.url }}" class="text-[#ffb045] font-semibold text-sm hover:underline">{{ read_more }}</a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+
+        <div class="mt-10">
+          {% render 'pagination', pagination: paginate %}
+        </div>
+      {% else %}
+        <p class="text-center text-xl text-gray-600 py-16">{{ empty_msg }}</p>
+      {% endif %}
+    </div>
+  {% endpaginate %}
+</div>
