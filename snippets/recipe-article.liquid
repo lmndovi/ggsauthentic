@@ -3,8 +3,8 @@
 {% endcomment %}
 
 {% assign product_handle = article.metafields.custom.product_handle %}
+{% assign title_down = article.title | downcase %}
 {% if product_handle == blank %}
-  {% assign title_down = article.title | downcase %}
   {% if title_down contains 'boozy blu' %}
     {% assign product_handle = 'boozy-blu' %}
   {% elsif title_down contains 'pineapple hot' %}
@@ -53,6 +53,47 @@
 {% assign shop_cta = shop_cta_text | default: 'Shop this sauce' %}
 {% assign related_title = related_heading | default: 'More recipes to try' %}
 {% assign related_max = related_limit | default: 3 %}
+
+{% comment %}
+  Recipe body product backlinks + GGSAUTHENTIC marinade twists.
+  Safe no-ops once Admin HTML already uses the updated wording.
+{% endcomment %}
+{% assign marinade_anchor = '<a href="https://ggsauthentic.com/products/marinade-mild" title="GGSAUTHENTIC Marinade Original Mild">GG&#39;s Authentic Marinade Original Mild</a>' %}
+{% assign recipe_body = article.content %}
+{% assign recipe_body = recipe_body | replace: 'https://ggsauthentic.com/products/pineapple-hot-1', 'https://ggsauthentic.com/products/pineapple-xtra-hot-1' %}
+{% assign recipe_body = recipe_body | replace: '/products/pineapple-hot-1', '/products/pineapple-xtra-hot-1' %}
+
+{% assign show_marinade_side = false %}
+
+{% if title_down contains 'hot wings' or article.handle == 'hot-wings-with-boozy-blu-sauce' %}
+  {% assign wings_method = marinade_anchor | append: ', and smoked paprika' %}
+  {% assign wings_ingredient = '1 tbsp ' | append: marinade_anchor %}
+  {% assign recipe_body = recipe_body | replace: 'garlic powder, and smoked paprika', wings_method %}
+  {% assign recipe_body = recipe_body | replace: '1 tsp garlic powder', wings_ingredient %}
+  {% assign show_marinade_side = true %}
+{% endif %}
+
+{% if title_down contains 'jerk' %}
+  {% assign jerk_chicken_ing = '2 tbsp jerk seasoning (dry rub or paste), mixed with 1 tbsp ' | append: marinade_anchor %}
+  {% assign jerk_bass_ing = '1½ tbsp jerk seasoning (dry or paste), mixed with 1 tbsp ' | append: marinade_anchor %}
+  {% assign jerk_chicken_method = 'mix the jerk seasoning with the ' | append: marinade_anchor | append: ', then rub all over' %}
+  {% assign jerk_bass_method = 'mix the jerk seasoning with the ' | append: marinade_anchor | append: ', then rub with that mix, oil, and a pinch of salt' %}
+  {% assign recipe_body = recipe_body | replace: '2 tbsp jerk seasoning (dry rub or paste)', jerk_chicken_ing %}
+  {% assign recipe_body = recipe_body | replace: '1½ tbsp jerk seasoning (dry or paste)', jerk_bass_ing %}
+  {% assign recipe_body = recipe_body | replace: 'rub all over with the jerk seasoning', jerk_chicken_method %}
+  {% assign recipe_body = recipe_body | replace: 'rub with jerk seasoning, oil, and a pinch of salt', jerk_bass_method %}
+
+  {% unless recipe_body contains 'GGSAUTHENTIC twist' %}
+    {% assign twist_html = '<p><strong>GGSAUTHENTIC twist:</strong> Mixing <a href="https://ggsauthentic.com/products/marinade-mild" title="GGSAUTHENTIC Marinade Original Mild">GG&#39;s Authentic Marinade Original Mild</a> into the jerk seasoning adds herb depth and a signature GG&#39;s finish.</p>' %}
+    {% assign recipe_body = recipe_body | append: twist_html %}
+  {% endunless %}
+  {% assign show_marinade_side = true %}
+{% endif %}
+
+{% assign marinade_side_product = all_products['marinade-mild'] %}
+{% if marinade_side_product == blank %}
+  {% assign marinade_side_product = all_products['copy-of-ggs-authentic-marinade-original-mild'] %}
+{% endif %}
 
 <article class="recipe-article py-8" itemscope itemtype="https://schema.org/Recipe">
   {% if article.image != blank %}
@@ -150,11 +191,36 @@
           </a>
         </div>
       {% endif %}
+
+      {% if show_marinade_side and marinade_side_product != blank %}
+        {% if linked_product == blank or marinade_side_product.handle != linked_product.handle %}
+        <div class="recipe-card recipe-card--product">
+          <p class="recipe-product-label">GGSAUTHENTIC twist</p>
+          <a href="{{ marinade_side_product.url }}" class="recipe-product-link group">
+            {% if marinade_side_product.featured_image %}
+              <img
+                src="{{ marinade_side_product.featured_image | image_url: width: 120 }}"
+                alt="{{ marinade_side_product.title }}"
+                class="recipe-product-image"
+                loading="lazy"
+              >
+            {% endif %}
+            <div class="recipe-product-meta">
+              <h3 class="recipe-product-title group-hover:underline">{{ marinade_side_product.title }}</h3>
+              <p class="recipe-product-price">{{ marinade_side_product.price | money }}</p>
+            </div>
+          </a>
+          <a href="{{ marinade_side_product.url }}" class="recipe-shop-btn recipe-shop-btn--compact">
+            Shop the marinade
+          </a>
+        </div>
+        {% endif %}
+      {% endif %}
     </aside>
 
     <div class="lg:col-span-8">
       <div itemprop="recipeInstructions" class="recipe-body rte">
-        {{ article.content }}
+        {{ recipe_body }}
       </div>
     </div>
   </div>
